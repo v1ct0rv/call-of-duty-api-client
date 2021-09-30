@@ -13,6 +13,14 @@ You need to set the following environment variables (or create .env file):
 *PASSWORD:  The password to be used to authenticate in case of use `username` authentication type.
 *TWO_CAPTCHA_API_KEY: The 2captcha api key to be used to authenticate in case of use `username` authentication type.
 
+## Setup environment
+
+``` bash
+npm install
+cd frontend-app
+npm install
+```
+
 We are using the library [call-of-duty-api](https://github.com/Lierrmm/Node-CallOfDuty), You can find documentation [here](https://lierrmm.gitbook.io/call-of-duty-api/).
 
 The latest version of the package will provide 2 methods of authentication.
