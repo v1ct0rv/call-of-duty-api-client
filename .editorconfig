@@ -1,0 +1,30 @@
+# Safefleet's Base EditorConfig.
+
+root=true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+max_line_length = 150
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+[*.{sln,sln.DotSettings}]
+indent_style = tab
+insert_final_newline = unset
+
+[*.cs]
+# S3925: "ISerializable" should be implemented correctly
+dotnet_diagnostic.S3925.severity = none
+
+# S4027: Exceptions should provide standard constructors
+dotnet_diagnostic.S4027.severity = none
+
+# S4041: Type names should not match namespaces
+dotnet_diagnostic.S4041.severity = none
