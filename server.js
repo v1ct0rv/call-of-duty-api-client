@@ -7,8 +7,8 @@ const mongoose = require("mongoose")
 const { graphqlHTTP } = require("express-graphql")
 const logger = require("./core/logger")
 var cors = require('cors')
-const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
-const statsJob = require('./jobs/statsJob')
+// const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
+// const statsJob = require('./jobs/statsJob')
 
 const extensions = ({ context }) => {
   return {
@@ -49,20 +49,20 @@ app.use(
   })
 );
 
-// Recurrent Jobs Configuration
-const scheduler = new ToadScheduler()
-const statsGrabberTask = new AsyncTask(
-    'Call of Duty Stats Grabber',
-    () => { return statsJob().then((result) => { console.log(`[${new Date().toISOString()}]: Stats Job Finished.`) }) },
-    (err) => { console.error(err) }
-)
+// // Recurrent Jobs Configuration
+// const scheduler = new ToadScheduler()
+// const statsGrabberTask = new AsyncTask(
+//     'Call of Duty Stats Grabber',
+//     () => { return statsJob().then((result) => { console.log(`[${new Date().toISOString()}]: Stats Job Finished.`) }) },
+//     (err) => { console.error(err) }
+// )
 
-const job = new SimpleIntervalJob({ seconds: process.env.STATS_JOB_INTERVAL }, statsGrabberTask)
+// const job = new SimpleIntervalJob({ seconds: process.env.STATS_JOB_INTERVAL }, statsGrabberTask)
 
-scheduler.addSimpleIntervalJob(job)
+// scheduler.addSimpleIntervalJob(job)
 
-// Run once at startup
-const start = async function () {
-  await statsJob();
-}
-// start();
+// // Run once at startup
+// const start = async function () {
+//   await statsJob();
+// }
+// // start();
