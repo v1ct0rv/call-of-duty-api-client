@@ -109,7 +109,7 @@ const trackedGamersService = class TrackedGamersService {
       gamertag: 'egocadavid'
     }, {
       platform: 'battle',
-      gamertag: 'nandiviry250#5004699'
+      gamertag: 'Dhill#1111'
     },
     {
       platform: 'battle',
@@ -121,7 +121,7 @@ const trackedGamersService = class TrackedGamersService {
     },
     {
       platform: 'psn',
-      gamertag: 'saninandres1'
+      gamertag: 'Saninandres1985'
     },
     // {
     //   platform: '',
