@@ -5,7 +5,8 @@ const { composeWithMongoose } = require("graphql-compose-mongoose");
 const BRStatsSchema = new Schema({
   date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    index: true,
   },
   platform: String,
   username: { type: String, index: true },

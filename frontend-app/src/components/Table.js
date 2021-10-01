@@ -147,15 +147,21 @@ function resolveSort(query) {
 }
 
 function resolveFilter(query) {
-  if(!query.search || query.search === '') return {}
-
-  return {
+  let filter = {
     _operators: {
-      username: {
-        "regex": query.search
+      date: {
+        gte: new Date().toISOString().substring(0, 10) // UTC Date
       }
     }
   }
+
+  if(!query.search || query.search === '') return filter
+
+  filter._operators.username = {
+    regex: query.search
+  }
+
+  return filter
 }
 
 function secondsToDhms(seconds) {
