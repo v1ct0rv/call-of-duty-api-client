@@ -23,7 +23,14 @@ const BRStatsSchema = new Schema({
     topFive: { type: Number, index: true },
     topTen: { type: Number, index: true },
     topTwentyFive: { type: Number, index: true },
-  }
+    winsPercent: { type: Number, index: true },
+    killsPerGame: { type: Number, index: true },
+    gamesPerWin: { type: Number, index: true },
+  },
+  lastUpdate: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // BRStatsSchema.virtual('br.winsPercent').get(function() {
@@ -32,29 +39,31 @@ const BRStatsSchema = new Schema({
 // });
 
 const brStatsTC = composeWithMongoose(mongoose.model("brstats", BRStatsSchema))
-brStatsTC.get('br').addFields({
-  winsPercent: {
-    type: 'Float',
-    resolve: (source) => {
-      // console.log('here is the source', source)
-      return ((source.wins*100)/source.gamesPlayed)
-    }
-  },
-  killsPerGame: {
-    type: 'Float',
-    resolve: (source) => {
-      // console.log('here is the source', source)
-      return source.kills/source.gamesPlayed
-    }
-  },
-  gamesPerWin: {
-    type: 'Float',
-    resolve: (source) => {
-      // console.log('here is the source', source)
-      return source.gamesPlayed/source.wins
-    }
-  }
-});
+
+// Custom calculated stats
+// brStatsTC.get('br').addFields({
+//   winsPercent: {
+//     type: 'Float',
+//     resolve: (source) => {
+//       // console.log('here is the source', source)
+//       return ((source.wins*100)/source.gamesPlayed)
+//     }
+//   },
+//   killsPerGame: {
+//     type: 'Float',
+//     resolve: (source) => {
+//       // console.log('here is the source', source)
+//       return source.kills/source.gamesPlayed
+//     }
+//   },
+//   gamesPerWin: {
+//     type: 'Float',
+//     resolve: (source) => {
+//       // console.log('here is the source', source)
+//       return source.gamesPlayed/source.wins
+//     }
+//   }
+// });
 
 module.exports = {
   BRStatsSchema: mongoose.model("brstats", BRStatsSchema),

@@ -1,0 +1,71 @@
+# Platforms
+# psn      /* PlayStation */
+# steam /* Steam */
+# battle  /* BattleNET */
+# xbl       /* XBOX */
+# acti     /* Activision ID */
+# uno     /* numerical representation of Activision ID */
+# all       /* All platforms, used for fuzzySearch */
+- platform: battle
+  gamertag: 'v1ct0rv#1393'
+  teams:
+    - hackzone
+    - warzone
+    - a-team
+- platform: battle
+  gamertag: 'elmogo06#1516'
+  teams:
+    - hackzone
+    - warzone
+- platform: battle
+  gamertag: 'amauryandrex#2675'
+  teams:
+    - warzone
+- platform: psn
+  gamertag: juanjosemontoyax
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: pitjuan216
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: elcasco70
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: nickchain
+  teams:
+    - hackzone
+- platform: battle
+  gamertag: 'kgb2283#1956'
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: jdsilo
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: maurinho-07
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: egocadavid
+  teams:
+    - hackzone
+- platform: battle
+  gamertag: 'dhill#1111'
+  teams:
+    - hackzone
+- platform: battle
+  gamertag: 'zombiellama#11147'
+  teams:
+    - hackzone
+- platform: battle
+  gamertag: 'jomacaf#1430'
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: saninandres1985
+  teams:
+    - hackzone

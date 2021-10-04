@@ -26,12 +26,20 @@ const brStatsService = class BrStatsService {
     console.time(`brstats ${gamertag}`)
     let brstatsData = await this.API.MWBattleData(gamertag, platform);
     brstatsData.date = date
+    brstatsData.lastUpdate = new Date()
     brstatsData.username = gamertag
     brstatsData.platform = platform
+
+    // Custom stats
+    const brData = brstatsData.br
+    brData.winsPercent = ((brData.wins*100)/brData.gamesPlayed)
+    brData.killsPerGame = brData.kills/brData.gamesPlayed
+    brData.gamesPerWin = brData.gamesPlayed/brData.wins
+
     await this.brstats.updateOne({
       username: gamertag,
       platform: platform,
-      date: date
+      date: date,
     }, {
       $set: brstatsData
     }, {

@@ -1,3 +1,7 @@
+const yaml = require('js-yaml')
+const fs   = require('fs')
+const path = require('path')
+
 const trackedGamersService = class TrackedGamersService {
   constructor(mongoClient, database) {
     this.mongoClient = mongoClient;
@@ -74,79 +78,10 @@ const trackedGamersService = class TrackedGamersService {
   // uno     /* numerical representation of Activision ID */
   // all       /* All platforms, used for fuzzySearch */
   async bootstrapData() {
-    const gamers = [{
-      platform: 'battle',
-      gamertag: 'v1ct0rv#1393'
-    }, {
-      platform: 'battle',
-      gamertag: 'elmogo06#1516'
-    }, {
-      platform: 'battle',
-      gamertag: 'amauryandrex#2675'
-    }, {
-      platform: 'psn',
-      gamertag: 'juanjosemontoyax'
-    }, {
-      platform: 'psn',
-      gamertag: 'pitjuan216'
-    }, {
-      platform: 'psn',
-      gamertag: 'elcasco70'
-    }, {
-      platform: 'psn',
-      gamertag: 'nickchain'
-    }, {
-      platform: 'battle',
-      gamertag: 'kgb2283#1956'
-    }, {
-      platform: 'psn',
-      gamertag: 'jdsilo'
-    }, {
-      platform: 'psn',
-      gamertag: 'maurinho-07'
-    }, {
-      platform: 'psn',
-      gamertag: 'egocadavid'
-    }, {
-      platform: 'battle',
-      gamertag: 'Dhill#1111'
-    },
-    {
-      platform: 'battle',
-      gamertag: 'zombiellama#11147'
-    },
-    {
-      platform: 'battle',
-      gamertag: 'jomacaf#1430'
-    },
-    {
-      platform: 'psn',
-      gamertag: 'Saninandres1985'
-    },
-    // {
-    //   platform: '',
-    //   gamertag: ''
-    // },
-    // {
-    //   platform: '',
-    //   gamertag: ''
-    // },
-    // {
-    //   platform: '',
-    //   gamertag: ''
-    // },
-    // {
-    //   platform: '',
-    //   gamertag: ''
-    // },
-    // {
-    //   platform: '',
-    //   gamertag: ''
-    // },
-    ]
-
+    const gamers = yaml.load(fs.readFileSync(path.join(__dirname, '../data/gamers.yml'), 'utf8'))
     for (const gamer of gamers) {
-      await this.trackedGamers.updateOne(gamer, {
+      gamer.gamertag = gamer.gamertag.toLowerCase()
+      await this.trackedGamers.updateOne({ gamertag: gamer.gamertag, platform: gamer.platform }, {
         $set: gamer
       }, {
         upsert: true

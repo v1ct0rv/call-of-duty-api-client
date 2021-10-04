@@ -6,6 +6,7 @@ import {
 
 export const client = new ApolloClient({
   uri: '/graphql',
+  //uri: 'http://localhost:5000/graphql',
   cache: new InMemoryCache()
 });
 
@@ -20,7 +21,7 @@ export const getBrStats = gql`
         hasPreviousPage
       }
       items {
-        date
+        lastUpdate
         platform
         username
         br {

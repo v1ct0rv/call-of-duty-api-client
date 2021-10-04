@@ -41,11 +41,11 @@ const tableColumnConfig = [{
     title: 'User name',
     field: 'username',
   },
-  {
-    title: 'Platform',
-    field: 'platform',
-    sorting: false,
-  },
+  // {
+  //   title: 'Platform',
+  //   field: 'platform',
+  //   sorting: false,
+  // },
   {
     title: 'Wins',
     field: 'br.wins',
@@ -64,11 +64,16 @@ const tableColumnConfig = [{
     type: 'numeric',
   },
   {
+    title: '% Wins',
+    field: 'br.winsPercent',
+    type: 'numeric',
+    render: rowData => rowData.br.winsPercent.toFixed(2),
+  },
+  {
     title: 'Partidas x W',
     field: 'br.gamesPerWin',
     type: 'numeric',
     render: rowData => rowData.br.gamesPerWin.toFixed(2),
-    sorting: false,
   },
   {
     title: 'Time Played',
@@ -90,9 +95,25 @@ const tableColumnConfig = [{
     type: 'numeric',
   },
   {
+    title: 'Top 5',
+    field: 'br.topFive',
+    type: 'numeric',
+  },
+  {
+    title: 'Top 10',
+    field: 'br.topTen',
+    type: 'numeric',
+  },
+  {
+    title: 'Top 25',
+    field: 'br.topTwentyFive',
+    type: 'numeric',
+  },
+  {
     title: 'LastUpdate',
-    field: 'date',
-    type: 'date',
+    field: 'lastUpdate',
+    type: 'time',
+    sorting: false,
   }
 ]
 
