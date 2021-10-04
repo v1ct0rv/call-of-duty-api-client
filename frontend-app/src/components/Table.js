@@ -59,7 +59,7 @@ const tableColumnConfig = [{
     defaultSort: 'desc',
   },
   {
-    title: 'Partidas',
+    title: 'Games',
     field: 'br.gamesPlayed',
     type: 'numeric',
   },
@@ -70,7 +70,7 @@ const tableColumnConfig = [{
     render: rowData => rowData.br.winsPercent.toFixed(2),
   },
   {
-    title: 'Partidas x W',
+    title: 'Games x Win',
     field: 'br.gamesPerWin',
     type: 'numeric',
     render: rowData => rowData.br.gamesPerWin.toFixed(2),
