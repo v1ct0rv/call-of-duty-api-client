@@ -35,6 +35,7 @@ const brStatsService = class BrStatsService {
     brData.winsPercent = ((brData.wins*100)/brData.gamesPlayed)
     brData.killsPerGame = brData.kills/brData.gamesPlayed
     brData.gamesPerWin = brData.gamesPlayed/brData.wins
+    brData.killsPerMin = brData.kills/(brData.timePlayed / 60)
 
     await this.brstats.updateOne({
       username: gamertag,

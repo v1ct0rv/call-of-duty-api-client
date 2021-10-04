@@ -26,6 +26,7 @@ const BRStatsSchema = new Schema({
     winsPercent: { type: Number, index: true },
     killsPerGame: { type: Number, index: true },
     gamesPerWin: { type: Number, index: true },
+    killsPerMin: { type: Number, index: true },
   },
   lastUpdate: {
     type: Date,

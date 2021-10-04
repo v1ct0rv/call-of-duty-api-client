@@ -95,6 +95,18 @@ const tableColumnConfig = [{
     type: 'numeric',
   },
   {
+    title: 'Kills x Game',
+    field: 'br.killsPerGame',
+    type: 'numeric',
+    render: rowData => rowData.br.killsPerGame.toFixed(2),
+  },
+  {
+    title: 'Kills x Min',
+    field: 'br.killsPerMin',
+    type: 'numeric',
+    render: rowData => rowData.br.killsPerMin.toFixed(2),
+  },
+  {
     title: 'Top 5',
     field: 'br.topFive',
     type: 'numeric',
