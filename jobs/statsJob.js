@@ -73,17 +73,21 @@ const statsJob = async function () {
         // Lifetime Statistics
         console.log(`Getting Lifetime Statistics...`)
         await lifetimeStatsService.add(gamertag, platform, date)
+        await sleep(500)
 
         // Recent Match Details
         console.log(`Getting Recent Match Details...`)
         await recentMatchesService.add(gamertag, platform, date)
+        await sleep(500)
 
         // Battle Royale Statistics.
         console.log(`Getting Battle Royale Statistics...`)
         await brStatsService.add(gamertag, platform, date, teams)
+        await sleep(500)
 
         // Update User
-        await trackedGamersService.enableGamer(gamertag, platform);
+        await trackedGamersService.enableGamer(gamertag, platform)
+        await sleep(500)
       } catch (error) {
         // End all timers
         console.timeEnd(`lifetimeStats ${gamertag}`)
@@ -115,6 +119,10 @@ function getDateWithoutTime(dateTime) {
   var date = new Date(dateTime.getTime())
   date.setHours(0, 0, 0, 0)
   return date
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 module.exports = statsJob
