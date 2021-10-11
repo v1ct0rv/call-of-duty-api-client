@@ -36,7 +36,9 @@ mongoose.connection.on(
   "error",
   console.error.bind(console, "MongoDB connection error:")
 );
+
 const graphqlSchema = require("./schemas/index");
+
 app.use(
   "/graphql",
   graphqlHTTP((request) => {
@@ -48,6 +50,11 @@ app.use(
     };
   })
 );
+
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname , '/public/index.html'));
+});
 
 // // Recurrent Jobs Configuration
 // const scheduler = new ToadScheduler()
