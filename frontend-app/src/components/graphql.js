@@ -23,6 +23,7 @@ export const getBrStats = gql`
         lastUpdate
         platform
         username
+        teams
         br {
           wins
           kills

@@ -13,6 +13,9 @@ const recentMatchesService = class RecentMatchesService {
   async add(gamertag, platform, date) {
     console.time(`recentmatches ${gamertag}`)
     let recentmatchesData = await this.API.MWcombatwz(gamertag, platform)
+    recentmatchesData.date = new Date()
+    recentmatchesData.username = gamertag
+    recentmatchesData.platform = platform
     await this.recentmatches.insertOne(recentmatchesData)
     console.timeEnd(`recentmatches ${gamertag}`)
   }

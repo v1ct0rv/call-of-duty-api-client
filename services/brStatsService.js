@@ -22,13 +22,14 @@ const brStatsService = class BrStatsService {
     })
   }
 
-  async add(gamertag, platform, date) {
+  async add(gamertag, platform, date, teams) {
     console.time(`brstats ${gamertag}`)
     let brstatsData = await this.API.MWBattleData(gamertag, platform);
     brstatsData.date = date
     brstatsData.lastUpdate = new Date()
     brstatsData.username = gamertag
     brstatsData.platform = platform
+    brstatsData.teams = teams
 
     // Custom stats
     const brData = brstatsData.br

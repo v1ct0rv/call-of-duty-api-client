@@ -10,6 +10,7 @@ const BRStatsSchema = new Schema({
   },
   platform: String,
   username: { type: String, index: true },
+  teams: { type: [String], index: true },
   br: {
     wins: { type: Number, index: true },
     kills: { type: Number, index: true },

@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <div style={{width:'80%',margin:"40px auto"}}>
-        <Table />
+        <Table team="Hackzone" />
       </div>
     </div>
   );

@@ -129,6 +129,30 @@ const tableColumnConfig = [{
   }
 ]
 
+let team;
+
+const Table = (props)=>{
+  team = props.team
+  return (
+    <div>
+      <MaterialTable
+        icons={tableIcons}
+        columns={tableColumnConfig}
+        data={remoteData}
+        title={team + " Team"}
+        options={{
+          toolbar: true,
+          sorting: true,
+          draggable: false,
+          pageSize: 20,
+          thirdSortClick: false,
+          exportButton: true
+        }}
+      />
+    </div>
+  )
+}
+
 const remoteData = (query) => {
   console.log("Query object - ", query)
   return client.query({
@@ -149,27 +173,6 @@ const remoteData = (query) => {
   })
 }
 
-const Table = (props)=>{
-  return (
-    <div>
-      <MaterialTable
-        icons={tableIcons}
-        columns={tableColumnConfig}
-        data={remoteData}
-        title='Hackzone Team'
-        options={{
-          toolbar: true,
-          sorting: true,
-          draggable: false,
-          pageSize: 20,
-          thirdSortClick: false,
-          exportButton: true
-        }}
-      />
-    </div>
-  )
-}
-
 function resolveSort(query) {
   if(!query.orderBy) return "BR__KDRATIO_DESC"
 
@@ -184,6 +187,9 @@ function resolveFilter(query) {
     _operators: {
       date: {
         gte: new Date().toISOString().substring(0, 10) // UTC Date
+      },
+      teams: {
+        in: team.toLowerCase()
       }
     }
   }

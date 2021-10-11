@@ -57,6 +57,7 @@ const statsJob = async function () {
     for (const gamer of gamers) {
       let gamertag = gamer.gamertag
       let platform = gamer.platform
+      let teams = gamer.teams
       let date = getCurrentDateWithoutTime()
       let query = {
         username: gamertag,
@@ -79,7 +80,7 @@ const statsJob = async function () {
 
         // Battle Royale Statistics.
         console.log(`Getting Battle Royale Statistics...`)
-        await brStatsService.add(gamertag, platform, date)
+        await brStatsService.add(gamertag, platform, date, teams)
 
         // Update User
         await trackedGamersService.enableGamer(gamertag, platform);
