@@ -93,3 +93,11 @@
   gamertag: 'daniel_2202'
   teams:
     - warzone
+- platform: psn
+  gamertag: 'lucho_arm'
+  teams:
+    - warzone
+- platform: psn
+  gamertag: 'milovar'
+  teams:
+    - warzone
