@@ -8,7 +8,8 @@ const {
 const TrackedGamersService = require("../services/trackedGamersService");
 const BrStatsService = require("../services/brStatsService");
 const LifetimeStatsService = require("../services/lifetimeStatsService");
-const RecentMatchesService = require("../services/recentMatchesService");
+const PlayerMatchesService = require("../services/playerMatchesService");
+const MatchesService = require("../services/matchesService");
 const ConfigService = require('../services/configService');
 
 const statsJob = async function () {
@@ -36,8 +37,11 @@ const statsJob = async function () {
     const lifetimeStatsService = new LifetimeStatsService(client, database, API)
     await lifetimeStatsService.init()
 
-    const recentMatchesService = new RecentMatchesService(client, database, API)
-    await recentMatchesService.init()
+    const playerMatchesService = new PlayerMatchesService(client, database, API)
+    await playerMatchesService.init()
+
+    const matchesService = new MatchesService(client, database, API, playerMatchesService)
+    await matchesService.init()
 
     console.time('login')
     const authMode = await configService.get('authentication.mode')
@@ -77,7 +81,7 @@ const statsJob = async function () {
 
         // Recent Match Details
         console.log(`Getting Recent Match Details...`)
-        await recentMatchesService.add(gamertag, platform, date)
+        await playerMatchesService.add(gamertag, platform)
         await sleep(500)
 
         // Battle Royale Statistics.
@@ -99,6 +103,10 @@ const statsJob = async function () {
         await trackedGamersService.disableGamer(gamertag, platform, error);
       }
     }
+
+    // Sync matches
+    await matchesService.syncMatches()
+
     console.timeEnd('AllStats')
 
     // // console.log(util.inspect(data,{showHidden: false, depth: null, colors: true}));
