@@ -101,3 +101,7 @@
   gamertag: 'milovar'
   teams:
     - warzone
+- platform: psn
+  gamertag: 'Alejo_Fenrir'
+  teams:
+    - warzone
