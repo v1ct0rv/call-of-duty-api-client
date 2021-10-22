@@ -51,4 +51,8 @@ step 5. Pass this value into the loginwithSSO method.
 
 You can test on your browser: https://my.callofduty.com/api/papi-client/stats/cod/v1/title/mw/platform/battle/gamer/elmogo06%231516/profile/type/wz
 
+List all matches
+https://my.callofduty.com/api/papi-client/crm/cod/v2/title/mw/platform/battle/gamer/elmogo06%231516/matches/wz/start/0/end/0
+https://my.callofduty.com/api/papi-client/crm/cod/v2/title/mw/platform/battle/gamer/v1ct0rv%231393/matches/wz/start/0/end/0
+
 Reminder - the ACT_SSO_COOKIE token expires every 14 days and you will need to repeat the steps to re-validate it

@@ -37,10 +37,10 @@ const statsJob = async function () {
     const lifetimeStatsService = new LifetimeStatsService(client, database, API)
     await lifetimeStatsService.init()
 
-    const playerMatchesService = new PlayerMatchesService(client, database, API)
+    const playerMatchesService = new PlayerMatchesService(client, database, API, trackedGamersService)
     await playerMatchesService.init()
 
-    const matchesService = new MatchesService(client, database, API, playerMatchesService)
+    const matchesService = new MatchesService(client, database, API, playerMatchesService, configService)
     await matchesService.init()
 
     console.time('login')

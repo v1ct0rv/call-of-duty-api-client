@@ -1,9 +1,10 @@
 const matchesService = class MatchesService {
-  constructor(mongoClient, database, api, playerMatchesService) {
+  constructor(mongoClient, database, api, playerMatchesService, configService) {
     this.mongoClient = mongoClient
     this.database = database
     this.API = api
     this.playerMatchesService = playerMatchesService
+    this.configService = configService
   }
 
   async init() {
@@ -16,23 +17,29 @@ const matchesService = class MatchesService {
     });
   }
 
-  async syncMatches() {
-    console.time(`syncMatches`)
-    let playerMatches = await this.playerMatchesService.getAllPendingToSync()
-    for (const match of playerMatches) {
-      if(! await this.exists(match.matchID)) {
-        console.time(`syncMatches: queryMatch ${match.matchID}`)
-        const matchInfo = await this.API.MWFullMatchInfowz(match.matchID)
-        matchInfo.matchID = match.matchID
-        console.timeEnd(`syncMatches: queryMatch ${match.matchID}`)
-        await this.matches.insertOne(matchInfo)
-        // Sleep to avoid errors too many requests
-        await this.sleep(500)
+  async syncMatches(forceSycn = false) {
+    const syncMatchesEnabled = await this.configService.get('syncMatches.enabled')
+    if(syncMatchesEnabled || forceSycn) {
+      console.time(`syncMatches`)
+      let playerMatches = await this.playerMatchesService.getAllPendingToSync()
+      for (const match of playerMatches) {
+        if(! await this.exists(match.matchID)) {
+          let dateString = new Date().toISOString()
+          console.time(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
+          const matchInfo = await this.API.MWFullMatchInfowz(match.matchID)
+          matchInfo.matchID = match.matchID
+          console.timeEnd(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
+          await this.matches.insertOne(matchInfo)
+          // Sleep to avoid errors too many requests
+          await this.sleep(500)
+        }
+        // Set the match loaded
+        await this.playerMatchesService.setMatchesSynched(match.matchID)
       }
-      // Set the match loaded
-      await this.playerMatchesService.setMatchesSynched(match.matchID)
+      console.timeEnd(`syncMatches`)
+    } else {
+      console.log(`[${new Date().toISOString()}] syncMatches is disabled, skipping...`)
     }
-    console.timeEnd(`syncMatches`)
   }
 
   async getAll() {

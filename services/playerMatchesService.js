@@ -1,8 +1,11 @@
+var moment = require('moment')
+
 const playerMatchesService = class PlayerMatchesService {
-  constructor(mongoClient, database, api) {
+  constructor(mongoClient, database, api, trackedGamersService) {
     this.mongoClient = mongoClient
     this.database = database
     this.API = api
+    this.trackedGamersService = trackedGamersService
   }
 
   async init() {
@@ -19,12 +22,20 @@ const playerMatchesService = class PlayerMatchesService {
 
   async add(gamertag, platform) {
     console.time(`playermatches ${gamertag}`)
-    let playerMatchesData = await this.API.MWcombatwz(gamertag, platform)
+    // Sync last 20 matches
+    const playerMatchesData = await this.API.MWcombatwz(gamertag, platform)
+    const gamer = await this.trackedGamersService.get(gamertag, platform)
+
     for (const match of playerMatchesData.matches) {
+      // Update UnoId in gamer table if not exists
+      if(!gamer.uno) {
+        gamer.uno = match.player.uno
+        // set player old matches synched
+        await this.trackedGamersService.update(gamer)
+      }
       match.lastUpdate = new Date()
       match.username = gamertag
       match.platform = platform
-      match.sync = false
       await this.playerMatches.updateOne({
         username: gamertag,
         platform: platform,
@@ -35,6 +46,40 @@ const playerMatchesService = class PlayerMatchesService {
         upsert: true
       })
     }
+
+    // Get all matches if this player was not sync before
+    if(!gamer.syncOldMatches) {
+      // We will iterate from March 10 (Warzone release date) till now, going 2 monts
+      let wzStart = moment('2020-03-10');
+      let now = moment()
+      for (var start = moment(wzStart); start.isBefore(now); start.add(2, 'months')) {
+        let end = moment(start).add(2, 'months')
+        console.log(`Getting old matches from '${start.format('YYYY-MM-DD hh:mm:ss')}' to '${end.format('YYYY-MM-DD hh:mm:ss')}'`);
+        let oldMatchesData = await this.API.MWfullcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
+        for (const match of oldMatchesData) {
+          await this.playerMatches.updateOne({
+            username: gamertag,
+            platform: platform,
+            matchID: match.matchId
+          }, {
+            $set: {
+              username: gamertag,
+              platform: platform,
+              matchId: match.matchId,
+              utcStartSeconds: match.timestamp/1000
+            }
+          }, {
+            upsert: true
+          })
+        }
+
+        // Sleep to avoid errors too many requests
+        await this.sleep(500)
+      }
+
+      // set player old matches synched
+      await this.trackedGamersService.setOldMatchesSynched(gamertag, platform)
+    }
     console.timeEnd(`playermatches ${gamertag}`)
   }
 
@@ -43,7 +88,7 @@ const playerMatchesService = class PlayerMatchesService {
   }
 
   async getAllPendingToSync() {
-    const cursor = await this.playerMatches.find({ sync: false })
+    const cursor = await this.playerMatches.find({ $or: [{sync: { $exists: false}}, { sync: false }]})
     try {
       return await cursor.toArray()
     } finally {
@@ -59,6 +104,10 @@ const playerMatchesService = class PlayerMatchesService {
           sync: true
         }
       })
+  }
+
+  async sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
