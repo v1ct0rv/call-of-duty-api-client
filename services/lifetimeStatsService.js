@@ -26,6 +26,7 @@ const lifetimeStatsService = class LifetimeStatsService {
     console.time(`lifetimeStats gamer: ${gamertag}, plattform: ${platform}`)
     let lifetimeStatsData = await this.API.MWwz(gamertag, platform)
     lifetimeStatsData.date = date
+    lifetimeStatsData.platform = platform
     await this.lifetimeStats.updateOne({
       username: gamertag,
       platform: platform,
