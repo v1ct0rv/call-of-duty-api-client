@@ -74,7 +74,7 @@ const playerMatchesService = class PlayerMatchesService {
         }
 
         // Sleep to avoid errors too many requests
-        await this.sleep(500)
+        await this.sleep(1000)
       }
 
       // set player old matches synched

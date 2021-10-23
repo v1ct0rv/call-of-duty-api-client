@@ -23,7 +23,7 @@ const lifetimeStatsService = class LifetimeStatsService {
   }
 
   async add(gamertag, platform, date) {
-    console.time(`lifetimeStats ${gamertag}`)
+    console.time(`lifetimeStats gamer: ${gamertag}, plattform: ${platform}`)
     let lifetimeStatsData = await this.API.MWwz(gamertag, platform)
     lifetimeStatsData.date = date
     await this.lifetimeStats.updateOne({
@@ -35,7 +35,7 @@ const lifetimeStatsService = class LifetimeStatsService {
     }, {
       upsert: true
     })
-    console.timeEnd(`lifetimeStats ${gamertag}`)
+    console.timeEnd(`lifetimeStats gamer: ${gamertag}, plattform: ${platform}`)
   }
 
   async getAll() {
