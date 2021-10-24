@@ -58,6 +58,7 @@ const syncMatchesJob = async function () {
   } catch (Error) {
     //Handle Exception
     console.error(Error)
+    process.exit(1)
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
