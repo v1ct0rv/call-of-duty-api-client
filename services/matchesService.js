@@ -26,12 +26,16 @@ const matchesService = class MatchesService {
         if(! await this.exists(match.matchID)) {
           let dateString = new Date().toISOString()
           console.time(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
-          const matchInfo = await this.API.MWFullMatchInfowz(match.matchID)
-          matchInfo.matchID = match.matchID
-          console.timeEnd(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
-          await this.matches.insertOne(matchInfo)
+          try {
+            const matchInfo = await this.API.MWFullMatchInfowz(match.matchID, match.platform)
+            matchInfo.matchID = match.matchID
+            console.timeEnd(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
+            await this.matches.insertOne(matchInfo)
+          } catch(Error) {
+              console.error(`Error fetching match ${match.matchID}: ${Error}`)
+          }
           // Sleep to avoid errors too many requests
-          await this.sleep(500)
+          await this.sleep(this.randomIntFromInterval(100, 500))
         }
         // Set the match loaded
         await this.playerMatchesService.setMatchesSynched(match.matchID)
@@ -53,6 +57,10 @@ const matchesService = class MatchesService {
 
   async sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  randomIntFromInterval(min, max) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 }
 

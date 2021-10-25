@@ -52,8 +52,6 @@ const syncMatchesJob = async function () {
     // Sync matches
     await matchesService.syncMatches(true)
 
-    console.timeEnd('AllStats')
-
     // // console.log(util.inspect(data,{showHidden: false, depth: null, colors: true}));
   } catch (Error) {
     //Handle Exception
