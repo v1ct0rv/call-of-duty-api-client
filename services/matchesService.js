@@ -109,7 +109,7 @@ const matchesService = class MatchesService {
       }
       console.timeEnd(`syncMatches`)
     } else {
-      console.log(`[${new Date().toISOString()}] syncMatches is disabled and forceSycn is set to ${forceSycn}, skipping...`)
+      console.log(`[${new Date().toISOString()}] 'syncMatches.enabled' config property is set to '${syncMatchesEnabled.value}' and forceSycn is set to '${forceSycn}', skipping...`)
     }
   }
 
