@@ -10,14 +10,18 @@ const playerMatchesService = class PlayerMatchesService {
 
   async init() {
     // Create Collection is not exists
-    this.playerMatches = this.database.collection('playermatches');
+    this.playerMatches = this.database.collection('playermatches')
+    
     await this.playerMatches.createIndex({
       platform: 1,
       username: 1,
       matchID: 1,
     }, {
       unique: true
-    });
+    })
+    await this.playerMatches.createIndex({
+       sync: 1
+    })
   }
 
   async add(gamertag, platform) {
@@ -98,12 +102,26 @@ const playerMatchesService = class PlayerMatchesService {
 
   async setMatchesSynched(matchID) {
     await this.playerMatches.updateMany({
-        matchID: matchID
-      }, {
-        $set: {
-          sync: true
-        }
-      })
+      matchID: matchID
+    }, {
+      $set: {
+        sync: true
+      }
+    })
+  }
+
+  async forceReSyncAllMatches() {
+    console.time(`forceReSyncAllMatches`)
+    console.log(`Forcing all matches to resync...`)
+    
+    const result = await this.playerMatches.updateMany({ sync: true }, {
+      $set: {
+        sync: false
+      }
+    })
+    
+    console.log(`${result.modifiedCount} matches were set to resync...`)
+    console.timeEnd(`forceReSyncAllMatches`)
   }
 
   async sleep(ms) {

@@ -49,8 +49,11 @@ const syncMatchesJob = async function () {
     }
     console.timeEnd('login')
 
+    // force Resync All Matches
+    // await playerMatchesService.forceReSyncAllMatches();
+
     // Sync matches
-    await matchesService.syncMatches(true)
+    await matchesService.syncMatches(true, false)
 
     // // console.log(util.inspect(data,{showHidden: false, depth: null, colors: true}));
   } catch (Error) {

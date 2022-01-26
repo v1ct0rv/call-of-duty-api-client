@@ -3,16 +3,6 @@ const Schema = mongoose.Schema;
 const { composeWithMongoose } = require("graphql-compose-mongoose");
 
 const AllPlayersSchema = new Schema({
-  utcStartSeconds: Number,
-  utcEndSeconds: Number,
-  map: String,
-  mode: String,
-  matchID: String,
-  duration: Number,
-  playlistName: String,
-  version: Number,
-  gameType: String,
-  playerCount: Number,
   playerStats: {
     kills: Number,
     deaths: Number,
@@ -33,6 +23,19 @@ const AllPlayersSchema = new Schema({
 
 const MatchesSchema = new Schema({
   matchID: { type: String , index: true },
+  utcStartSeconds: Number,
+  utcEndSeconds: Number,
+  map: String,
+  mode: String,
+  duration: Number,
+  playlistName: String,
+  version: Number,
+  gameType: String,
+  playerCount: Number,
+  teamCount: Number,
+  rankedTeams: { type: "Mixed"},
+  draw: Boolean,
+  privateMatch: Boolean,
   allPlayers: [ AllPlayersSchema ]
 });
 
