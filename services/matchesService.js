@@ -28,7 +28,7 @@ const matchesService = class MatchesService {
 
   async syncMatches(forceSycn = false, forceResync = false) {
     const syncMatchesEnabled = await this.configService.get('syncMatches.enabled')
-    if(syncMatchesEnabled || forceSycn) {
+    if(syncMatchesEnabled.value || forceSycn) {
       console.time(`syncMatches`)
       console.log(`[${new Date().toISOString()}] Getting all matches pending to sync...`)
       let playerMatches = await this.playerMatchesService.getAllPendingToSync()
@@ -109,7 +109,7 @@ const matchesService = class MatchesService {
       }
       console.timeEnd(`syncMatches`)
     } else {
-      console.log(`[${new Date().toISOString()}] syncMatches is disabled, skipping...`)
+      console.log(`[${new Date().toISOString()}] syncMatches is disabled and forceSycn is set to ${forceSycn}, skipping...`)
     }
   }
 
