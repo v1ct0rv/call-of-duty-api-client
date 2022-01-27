@@ -1,0 +1,58 @@
+Collection playerMatches
+
+All Mogo Wins by plattform and gamertag orderby date desc
+db.getCollection('playermatches').find({"platform" : "battle", "username" : "elmogo06#1516", "playerStats.teamPlacement": 1}).sort( { utcStartSeconds: -1 } )
+
+Last VictorV Win by plattform and gamertag
+db.getCollection('playermatches').find({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1}).sort( { utcStartSeconds: -1 } ).limit(1)
+
+
+All Mogo Wins by Uno ID
+db.getCollection('playermatches').find({"player.uno": "8200524073413652260", "playerStats.teamPlacement": 1})
+
+Collection matches
+
+All Mogo Wins by username
+db.getCollection('matches').aggregate([
+{
+   "$project" : {
+       "matchID" : 1, "utcStartSeconds" : 1, "date": 1,
+       "allPlayers" : {
+          "$filter" : {
+             "input" : "$allPlayers",
+             "as" : "allPlayers",
+             "cond" : { "$and" : [
+                 { "$eq" : [ "$$allPlayers.playerStats.teamPlacement", 1 ] },
+                ]
+             }
+          }
+       }
+   }
+},
+{ 
+  "$match" : { 
+    "allPlayers.player.username" : "TTV ElMogo06",
+  }
+},
+])
+
+All Mogo Wins by uno ID
+db.getCollection('matches').aggregate([
+{
+   "$project" : {
+       "matchID" : 1, "utcStartSeconds" : 1, "date": 1,
+       "allPlayers" : {
+          "$filter" : {
+             "input" : "$allPlayers",
+             "as" : "allPlayers",
+             "cond" : { "$eq" : [ "$$allPlayers.playerStats.teamPlacement", 1 ] }
+             }
+         }
+    }
+},
+{ 
+  "$match" : { 
+    "allPlayers.player.uno" : "8200524073413652260",
+  }
+},
+])

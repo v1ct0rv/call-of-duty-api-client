@@ -42,6 +42,7 @@ Downsides
 
 Benefits
 - 100% success rate with valid SSO token
+
 HOW TO RETRIEVE A SSO TOKEN 
 step 1. visit https://my.callofduty.com/ and login
 step 2. Open dev tools

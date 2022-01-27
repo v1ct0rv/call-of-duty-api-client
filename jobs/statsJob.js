@@ -31,14 +31,14 @@ const statsJob = async function () {
     const trackedGamersService = new TrackedGamersService(client, database)
     await trackedGamersService.init()
 
-    const brStatsService = new BrStatsService(client, database, API)
-    await brStatsService.init()
-
     const lifetimeStatsService = new LifetimeStatsService(client, database, API)
     await lifetimeStatsService.init()
 
     const playerMatchesService = new PlayerMatchesService(client, database, API, trackedGamersService)
     await playerMatchesService.init()
+
+    const brStatsService = new BrStatsService(client, database, API, playerMatchesService)
+    await brStatsService.init()
 
     const matchesService = new MatchesService(client, database, API, playerMatchesService, configService)
     await matchesService.init()

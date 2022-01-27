@@ -127,6 +127,13 @@ const playerMatchesService = class PlayerMatchesService {
   async sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  async getLastWinMatch(gamertag, platform) {
+    const options = {
+      sort: { utcStartSeconds: -1 }
+    };
+    return await this.playerMatches.findOne({platform, username : gamertag, "playerStats.teamPlacement": 1}, options)
+  }
 }
 
 module.exports = playerMatchesService
