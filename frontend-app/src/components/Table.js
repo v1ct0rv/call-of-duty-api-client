@@ -16,6 +16,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { client, getBrStats } from "./graphql";
+import moment from "moment";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -57,6 +58,12 @@ const tableColumnConfig = [{
     type: 'numeric',
     render: rowData => rowData.br.kdRatio.toFixed(2),
     defaultSort: 'desc',
+  },
+  {
+    title: 'LastWin',
+    field: 'br.lastWin.date',
+    type: 'datetime',
+    render: rowData => <span title={moment(rowData.br.lastWin.date).format('LLL')}>{moment(rowData.br.lastWin.date).fromNow()}</span>,
   },
   {
     title: 'Games',
@@ -177,9 +184,9 @@ function resolveSort(query) {
   if(!query.orderBy) return "BR__KDRATIO_DESC"
 
   if(query.orderDirection === 'asc') {
-    return `${query.orderBy.field.toUpperCase().replace('.', '__')}_ASC`
+    return `${query.orderBy.field.toUpperCase().replaceAll('.', '__')}_ASC`
   }
-  return `${query.orderBy.field.toUpperCase().replace('.', '__')}_DESC`
+  return `${query.orderBy.field.toUpperCase().replaceAll('.', '__')}_DESC`
 }
 
 function resolveFilter(query) {

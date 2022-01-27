@@ -41,6 +41,15 @@ export const getBrStats = gql`
           killsPerGame
           gamesPerWin
           killsPerMin
+          lastWin {
+            date
+            playerStats {
+              kills
+              deaths
+              kdRatio
+              gulagDeaths
+            }
+          }
         }
       }
     }
