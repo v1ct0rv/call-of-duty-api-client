@@ -150,7 +150,7 @@ const Table = (props)=>{
         options={{
           toolbar: true,
           sorting: true,
-          draggable: false,
+          draggable: true,
           pageSize: 20,
           thirdSortClick: false,
           exportButton: true
