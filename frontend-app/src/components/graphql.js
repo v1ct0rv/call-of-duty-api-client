@@ -42,6 +42,7 @@ export const getBrStats = gql`
           gamesPerWin
           killsPerMin
           lastWin {
+            matchID
             date
             playerStats {
               kills

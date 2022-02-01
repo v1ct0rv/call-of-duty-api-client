@@ -63,7 +63,7 @@ const tableColumnConfig = [{
     title: 'LastWin',
     field: 'br.lastWin.date',
     type: 'datetime',
-    render: rowData => <span title={moment(rowData.br.lastWin.date).format('LLL')}>{moment(rowData.br.lastWin.date).fromNow()}</span>,
+    render: rowData => <span title={moment(rowData.br.lastWin.date).format('LLL')}><a href={`https://wzstats.gg/match/${rowData.br.lastWin.matchID}/`} target="_blank" rel="noreferrer">{moment(rowData.br.lastWin.date).fromNow()}</a></span>,
   },
   {
     title: 'Games',
