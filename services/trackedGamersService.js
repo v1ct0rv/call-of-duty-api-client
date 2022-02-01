@@ -59,18 +59,6 @@ const trackedGamersService = class TrackedGamersService {
     })
   }
 
-  async setOldMatchesSynched(gamertag, platform) {
-    const gamer = {
-      gamertag,
-      platform
-    };
-    return await this.trackedGamers.updateOne(gamer, {
-      $set: {
-        syncOldMatches: true
-      }
-    })
-  }
-
   async setLastOldMatchesSync(gamertag, platform, lastOldMatchesSyncDate) {
     const gamer = {
       gamertag,
