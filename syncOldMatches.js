@@ -50,7 +50,7 @@ const syncMatchesJob = async function () {
 
     for (const gamer of gamers) {
       // force Resync Old Matches
-      await playerMatchesService.syncOldMatches(gamer.gamertag, gamer.platform, gamer.syncOldMatches);
+      await playerMatchesService.syncOldMatches(gamer)
     }
 
     // // console.log(util.inspect(data,{showHidden: false, depth: null, colors: true}));

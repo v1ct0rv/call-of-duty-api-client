@@ -71,6 +71,18 @@ const trackedGamersService = class TrackedGamersService {
     })
   }
 
+  async setLastOldMatchesSync(gamertag, platform, lastOldMatchesSyncDate) {
+    const gamer = {
+      gamertag,
+      platform
+    };
+    return await this.trackedGamers.updateOne(gamer, {
+      $set: {
+        lastOldMatchesSyncDate
+      }
+    })
+  }
+
   async getAll() {
     const cursor = await this.trackedGamers.find({})
     try {

@@ -50,9 +50,6 @@ const playerMatchesService = class PlayerMatchesService {
         upsert: true
       })
     }
-    
-    //this.syncOldMatches(gamertag, platform, gamer.syncOldMatches)
-
     console.timeEnd(`playermatches ${gamertag}`)
   }
 
@@ -104,49 +101,50 @@ const playerMatchesService = class PlayerMatchesService {
     return await this.playerMatches.findOne({platform, username : gamertag, "playerStats.teamPlacement": 1}, options)
   }
 
-  async syncOldMatches(gamertag, platform, oldMatchesSynched) {
+  async syncOldMatches(gamer) {
+    const gamertag = gamer.gamertag
+    const platform = gamer.platform
     console.time(`syncOldMatches`)
+
     // Get all matches if this player was not sync before
-    if(!oldMatchesSynched) {
-      console.log(`[${new Date().toISOString()}] Loading Old matches for gamertag '${gamertag}' and platform '${platform}'...`)
-      // We will iterate from March 10 (Warzone release date) till now, going 2 monts
-      let wzStart = moment('2020-03-10');
-      let now = moment()
-      for (var start = moment(wzStart); start.isBefore(now); start.add(12, 'hours')) {
-        let end = moment(start).add(12, 'hours')
-        console.log(`[${new Date().toISOString()}] Getting old matches for gamertag '${gamertag}' and platform '${platform}' from '${start.format('YYYY-MM-DD HH:mm:ss')}' to '${end.format('YYYY-MM-DD HH:mm:ss')}'`)
-        let oldMatchesData = await this.API.MWcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
-        
-        //console.dir(oldMatchesData)
-        if(oldMatchesData && oldMatchesData.matches) {
-          console.log(`[${new Date().toISOString()}] ${oldMatchesData.matches.length} old matches received'`)
+    console.log(`[${new Date().toISOString()}] Loading old matches for gamertag '${gamertag}' and platform '${platform}'...`)
+    // We will iterate from March 10 (Warzone release date) or player last syunc till now, going 2 hours step
+    let wzStart = gamer.lastOldMatchesSyncDate ? moment(gamer.lastOldMatchesSyncDate): moment('2020-03-10')
+    let now = moment()
+    for (var start = moment(wzStart); start.isBefore(now); start.add(2, 'hours')) {
+      let end = moment(start).add(2, 'hours')
+      console.log(`[${new Date().toISOString()}] Getting old matches for gamertag '${gamertag}' and platform '${platform}' from '${start.format('YYYY-MM-DD HH:mm:ss')}' to '${end.format('YYYY-MM-DD HH:mm:ss')}'`)
+      let oldMatchesData = await this.API.MWcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
+      
+      //console.dir(oldMatchesData)
+      if(oldMatchesData && oldMatchesData.matches) {
+        console.log(`[${new Date().toISOString()}] ${oldMatchesData.matches.length} old matches received'`)
 
-          for (const match of oldMatchesData.matches) {
-            match.lastUpdate = new Date()
-            match.username = gamertag
-            match.platform = platform
-            await this.playerMatches.updateOne({
-              username: gamertag,
-              platform: platform,
-              matchID: match.matchID
-            }, {
-              $set: match
-            }, {
-              upsert: true
-            })
-          }
+        for (const match of oldMatchesData.matches) {
+          match.lastUpdate = new Date()
+          match.username = gamertag
+          match.platform = platform
+          await this.playerMatches.updateOne({
+            username: gamertag,
+            platform: platform,
+            matchID: match.matchID
+          }, {
+            $set: match
+          }, {
+            upsert: true
+          })
         }
-
-        // Update last oldMatchSyncDate.
-        // Sleep to avoid errors too many requests
-        await this.sleep(this.randomIntFromInterval(100, 500))
       }
 
-      // set player old matches synched
-      await this.trackedGamersService.setOldMatchesSynched(gamertag, platform)
-    } else {
-      console.log(`[${new Date().toISOString()}] All Old matches are synched for ${gamertag}, skipping...`)
+      // Update lastOldMatchesSync
+      this.trackedGamersService.setLastOldMatchesSync(gamertag, platform, end.toDate())
+
+      // Update last oldMatchSyncDate.
+      // Sleep to avoid errors too many requests
+      await this.sleep(this.randomIntFromInterval(100, 500))
     }
+
+    console.log(`[${new Date().toISOString()}] All Old matches are synched for ${gamertag}, skipping...`)
 
     console.timeEnd(`syncOldMatches`)
 

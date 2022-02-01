@@ -6,6 +6,12 @@ db.getCollection('playermatches').find({"platform" : "battle", "username" : "elm
 Last VictorV Win by plattform and gamertag
 db.getCollection('playermatches').find({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1}).sort( { utcStartSeconds: -1 } ).limit(1)
 
+All VictorV Wins
+db.getCollection('playermatches').find({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1, "mode": {$in: [ "br_brquads","br_brtrios","br_brduos","br_brsolos", "br_brsolo", "br_vg_royale_quads", "br_vg_royale_trios", "br_vg_royale_duos", "br_vg_royale_solos", "br_vg_royale_solo", "br_br_real", "br_dbd_dbd", "br_vov_op_flash" ]}}).sort( { utcStartSeconds: -1 } )
+
+Count VictorV Wins
+db.getCollection('playermatches').count({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1, "mode": {$in: [ "br_brquads","br_brtrios","br_brduos","br_brsolos", "br_brsolo", "br_vg_royale_quads", "br_vg_royale_trios", "br_vg_royale_duos", "br_vg_royale_solos", "br_vg_royale_solo", "br_br_real", "br_dbd_dbd", "br_vov_op_flash" ]}})
+
 
 All Mogo Wins by Uno ID
 db.getCollection('playermatches').find({"player.uno": "8200524073413652260", "playerStats.teamPlacement": 1})
