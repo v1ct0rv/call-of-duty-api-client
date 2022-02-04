@@ -6,6 +6,7 @@ const util = require('util')
 const {
   MongoClient
 } = require("mongodb");
+const retry = require('async-retry');
 const TrackedGamersService = require("./services/trackedGamersService");
 const PlayerMatchesService = require("./services/playerMatchesService");
 const MatchesService = require("./services/matchesService");
@@ -50,7 +51,23 @@ const syncMatchesJob = async function () {
 
     for (const gamer of gamers) {
       // force Resync Old Matches
-      await playerMatchesService.syncOldMatches(gamer)
+      await retry(
+        async (bail, attempt) => {
+          console.log(`[${new Date().toISOString()}] Starting syncOldMatches, attepmt '${attempt}'...`)
+          await playerMatchesService.syncOldMatches(gamer)
+        },
+        {
+          retries: 2,
+          forever: true,
+          factor: 2,
+          minTimeout: 480000, // 8 minutes
+          maxTimeout: 900000, // 15 mins
+          onRetry: function(error) {
+            console.log(`[${new Date().toISOString()}] An Error ocurred on syncOldMatches, Error: '${error}'...`)
+            console.timeEnd(`syncOldMatches`)
+          },
+        }
+      )
     }
 
     // // console.log(util.inspect(data,{showHidden: false, depth: null, colors: true}));
