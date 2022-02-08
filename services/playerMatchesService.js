@@ -139,9 +139,11 @@ const playerMatchesService = class PlayerMatchesService {
       // Update lastOldMatchesSync
       this.trackedGamersService.setLastOldMatchesSync(gamertag, platform, end.toDate())
 
-      // Update last oldMatchSyncDate.
       // Sleep to avoid errors too many requests
-      await this.sleep(this.randomIntFromInterval(1200, 5000))
+      await this.sleep(this.randomIntFromInterval(100, 500))
+
+      // // Sleep to avoid errors too many requests
+      // await this.sleep(this.randomIntFromInterval(1200, 5000))
     }
 
     console.log(`[${new Date().toISOString()}] All Old matches are synched for ${gamertag}, skipping...`)

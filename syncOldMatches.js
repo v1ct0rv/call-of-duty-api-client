@@ -54,7 +54,8 @@ const syncMatchesJob = async function () {
       await retry(
         async (bail, attempt) => {
           console.log(`[${new Date().toISOString()}] Starting syncOldMatches, attepmt '${attempt}'...`)
-          await playerMatchesService.syncOldMatches(gamer)
+          gamerData = await trackedGamersService.get(gamer.gamertag, gamer.platform)
+          await playerMatchesService.syncOldMatches(gamerData)
         },
         {
           retries: 2,

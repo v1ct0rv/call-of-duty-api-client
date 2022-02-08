@@ -18,6 +18,9 @@ const statsJob = async function () {
   // Create a new MongoClient
   const client = new MongoClient(process.env.MONGO_DB_URI);
 
+  // TODO temporal fix for stuck requests.
+  // delete API.apiAxios.defaults.headers.common.userAgent;
+
   try {
     // Connect the client to the server
     await client.connect();

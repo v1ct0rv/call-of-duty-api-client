@@ -15,10 +15,8 @@ const statsGrabberTask = new AsyncTask(
     (err) => { console.error(err) }
 )
 
-console.timeEnd(`[${new Date().toISOString()}] Starting jobs with ${process.env.STATS_JOB_INTERVAL} seconds interval`)
+console.log(`[${new Date().toISOString()}] Starting jobs with ${process.env.STATS_JOB_INTERVAL} seconds interval`)
 
 const job = new SimpleIntervalJob({ seconds: process.env.STATS_JOB_INTERVAL, runImmediately: true }, statsGrabberTask)
 
 scheduler.addSimpleIntervalJob(job)
-
-
