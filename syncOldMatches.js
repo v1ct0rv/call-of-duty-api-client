@@ -41,7 +41,7 @@ const syncMatchesJob = async function () {
       await API.login((await configService.get('authentication.username')).value, (await configService.get('authentication.password')).value, (
         await configService.get('authentication.2captchaApiKey')).value);
     } else if (authMode.value == 'sso') {
-      await API.loginWithSSO((await configService.get('authentication.syncOldMatches.ssoToken')).value); // This will be different than index.js uses to avoid too many requests
+      await API.loginWithSSO((await configService.get('authentication.ssoToken')).value_alt); // This will be different than index.js uses to avoid too many requests
     } else {
       throw new Error(`Unknown Authentication Mode ${authMode}`)
     }
@@ -54,8 +54,7 @@ const syncMatchesJob = async function () {
       await retry(
         async (bail, attempt) => {
           console.log(`[${new Date().toISOString()}] Starting syncOldMatches, attepmt '${attempt}'...`)
-          gamerData = await trackedGamersService.get(gamer.gamertag, gamer.platform)
-          await playerMatchesService.syncOldMatches(gamerData)
+          await playerMatchesService.syncOldMatches(gamer)
         },
         {
           retries: 2,
