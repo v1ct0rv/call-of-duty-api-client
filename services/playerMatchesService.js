@@ -137,10 +137,11 @@ const playerMatchesService = class PlayerMatchesService {
       }
 
       // Update lastOldMatchesSync
+      gamer.lastOldMatchesSyncDate = end.toDate()
       this.trackedGamersService.setLastOldMatchesSync(gamertag, platform, end.toDate())
 
       // Sleep to avoid errors too many requests
-      await this.sleep(this.randomIntFromInterval(3000, 5000))
+      await this.sleep(this.randomIntFromInterval(1200, 5000))
 
       // // Sleep to avoid errors too many requests
       // await this.sleep(this.randomIntFromInterval(1200, 5000))

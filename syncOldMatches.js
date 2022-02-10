@@ -60,8 +60,8 @@ const syncMatchesJob = async function () {
           retries: 2,
           forever: true,
           factor: 2,
-          minTimeout: 480000, // 8 minutes
-          maxTimeout: 900000, // 15 mins
+          minTimeout: 300000, // 5 minutes
+          maxTimeout: 600000, // 10 mins // 900000, // 15 mins
           onRetry: function(error) {
             console.log(`[${new Date().toISOString()}] An Error ocurred on syncOldMatches, Error: '${error}'...`)
             console.timeEnd(`syncOldMatches`)
