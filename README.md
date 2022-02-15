@@ -57,3 +57,6 @@ https://my.callofduty.com/api/papi-client/crm/cod/v2/title/mw/platform/battle/ga
 https://my.callofduty.com/api/papi-client/crm/cod/v2/title/mw/platform/battle/gamer/v1ct0rv%231393/matches/wz/start/0/end/0
 
 Reminder - the ACT_SSO_COOKIE token expires every 14 days and you will need to repeat the steps to re-validate it
+
+All match types and description
+https://my.callofduty.com/content/atvi/callofduty/mycod/web/en/data/json/iq-content-xweb.js

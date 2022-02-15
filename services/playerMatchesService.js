@@ -1,4 +1,5 @@
-var moment = require('moment')
+const moment = require('moment')
+const constants = require("../core/constants")
 
 const playerMatchesService = class PlayerMatchesService {
   constructor(mongoClient, database, api, trackedGamersService) {
@@ -97,8 +98,9 @@ const playerMatchesService = class PlayerMatchesService {
   async getLastWinMatch(gamertag, platform) {
     const options = {
       sort: { utcStartSeconds: -1 }
-    };
-    return await this.playerMatches.findOne({platform, username : gamertag, "playerStats.teamPlacement": 1}, options)
+    }
+    
+    return await this.playerMatches.findOne({platform, username : gamertag, "playerStats.teamPlacement": 1, mode: {$in: constants.BR_MODES}}, options)
   }
 
   async syncOldMatches(gamer) {

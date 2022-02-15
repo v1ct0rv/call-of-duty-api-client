@@ -27,7 +27,7 @@ const PlayerMatchesSchema = new Schema({
     clantag: String,
   },
   playerStats: {
-    kills: Number,
+    kills: { type: Number, index: true },
     medalXp: Number,
     objectiveLastStandKill: Number,
     matchXp: Number,
@@ -43,7 +43,7 @@ const PlayerMatchesSchema = new Schema({
     distanceTraveled: Number,
     teamSurvivalTime: Number,
     deaths: Number,
-    kdRatio: Number,
+    kdRatio: { type: Number, index: true },
     objectiveBrDownEnemyCircle1: Number,
     objectiveBrMissionPickupTablet: Number,
     bonusXp: Number,
@@ -56,7 +56,7 @@ const PlayerMatchesSchema = new Schema({
     objectiveBrCacheOpen: Number,
     percentTimeMoving: Number,
     miscXp: Number,
-    longestStreak: Number,
+    longestStreak: { type: Number, index: true },
     teamPlacement: Number,
     damageDone: Number,
     damageTaken: Number
