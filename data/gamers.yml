@@ -12,6 +12,7 @@
     - hackzone
     - warzone
     - a-team
+    - ortonators
 - platform: battle
   gamertag: 'elmogo06#1516'
   teams:
@@ -113,3 +114,31 @@
   gamertag: 'andresscalle#1190'
   teams:
     - warzone
+- platform: battle
+  gamertag: 'donparcerotv#1292'
+  teams:
+    - ortonators
+- platform: battle
+  gamertag: 'ozzy23#11727'
+  teams:
+    - ortonators
+- platform: battle
+  gamertag: 'akiraco#1298'
+  teams:
+    - ortonators
+- platform: battle
+  gamertag: 'fire#2596'
+  teams:
+    - ortonators
+- platform: battle
+  gamertag: 'dekko#1376'
+  teams:
+    - ortonators
+- platform: battle
+  gamertag: 'xhela#1898'
+  teams:
+    - ortonators
+- platform: battle
+  gamertag: 'pekis#11414'
+  teams:
+    - ortonators
