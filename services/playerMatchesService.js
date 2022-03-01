@@ -113,11 +113,24 @@ const playerMatchesService = class PlayerMatchesService {
     // We will iterate from March 10 (Warzone release date) or player last syunc till now, going 2 hours step
     let wzStart = gamer.lastOldMatchesSyncDate ? moment(gamer.lastOldMatchesSyncDate): moment('2020-03-10')
     let now = moment()
+    let startMillis = 0
+    let currentMillis = 0
     for (var start = moment(wzStart); start.isBefore(now); start.add(2, 'hours')) {
       let end = moment(start).add(2, 'hours')
       console.log(`[${new Date().toISOString()}] Getting old matches for gamertag '${gamertag}' and platform '${platform}' from '${start.format('YYYY-MM-DD HH:mm:ss')}' to '${end.format('YYYY-MM-DD HH:mm:ss')}'`)
-      let oldMatchesData = await this.API.MWcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
-      
+      let oldMatchesData
+      try { 
+        oldMatchesData = await this.API.MWcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
+      } catch (error) {
+        console.log(`'${error.toLowerCase()}'`)
+        // If the errror is not allowed, continue with next gamertag
+        if(error.toLowerCase() === "not permitted: not allowed") {
+          start = moment()
+          console.error(error)
+          continue
+        }
+        throw(error)
+      }
       //console.dir(oldMatchesData)
       if(oldMatchesData && oldMatchesData.matches) {
         console.log(`[${new Date().toISOString()}] ${oldMatchesData.matches.length} old matches received'`)
@@ -143,7 +156,17 @@ const playerMatchesService = class PlayerMatchesService {
       this.trackedGamersService.setLastOldMatchesSync(gamertag, platform, end.toDate())
 
       // Sleep to avoid errors too many requests
-      await this.sleep(this.randomIntFromInterval(1200, 5000))
+      let randomSleep = this.randomIntFromInterval(500, 1500)
+      currentMillis += randomSleep
+
+      // If there passed 50 seconds lets wait 30 seconds.
+      if ((currentMillis - startMillis) >= 50000) {
+        startMillis = currentMillis
+        console.log(`Limit reached, waiting 180 seconds...`)
+        randomSleep = 180000
+      }
+
+      await this.sleep(randomSleep)
 
       // // Sleep to avoid errors too many requests
       // await this.sleep(this.randomIntFromInterval(1200, 5000))
