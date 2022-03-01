@@ -80,21 +80,21 @@ const statsJob = async function () {
         // Lifetime Statistics
         console.log(`Getting Lifetime Statistics...`)
         await lifetimeStatsService.add(gamertag, platform, date)
-        await sleep(500)
+        await sleep(1500)
 
         // Recent Match Details
         console.log(`Getting Recent Match Details...`)
         await playerMatchesService.add(gamertag, platform)
-        await sleep(500)
+        await sleep(1500)
 
         // Battle Royale Statistics.
         console.log(`Getting Battle Royale Statistics...`)
         await brStatsService.add(gamertag, platform, date, teams)
-        await sleep(500)
+        await sleep(1500)
 
         // Update User
         await trackedGamersService.enableGamer(gamertag, platform)
-        await sleep(500)
+        await sleep(1500)
       } catch (error) {
         // End all timers
         console.timeEnd(`lifetimeStats ${gamertag}`)
