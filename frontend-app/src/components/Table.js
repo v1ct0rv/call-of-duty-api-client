@@ -63,7 +63,13 @@ const tableColumnConfig = [{
     title: 'LastWin',
     field: 'br.lastWin.date',
     type: 'datetime',
-    render: rowData => <span title={moment(rowData.br.lastWin.date).format('LLL')}><a href={`https://wzstats.gg/match/${rowData.br.lastWin.matchID}/`} target="_blank" rel="noreferrer">{moment(rowData.br.lastWin.date).fromNow()}</a></span>,
+    render: rowData => {
+      if(rowData.br.lastWin.matchID) {
+        return <span title={moment(rowData.br.lastWin.date).format('LLL')}><a href={`https://wzstats.gg/match/${rowData.br.lastWin.matchID}/`} target="_blank" rel="noreferrer">{moment(rowData.br.lastWin.date).fromNow()}</a></span>
+      }
+
+      return <span>Not Available yet</span>
+    },
   },
   {
     title: 'Games',
@@ -89,7 +95,7 @@ const tableColumnConfig = [{
     render: rowData => {
       const parsed = secondsToDhms(rowData.br.timePlayed)
       return <div>{parsed.d}<span className="small">D </span>{parsed.h}<span className="small">H </span>{parsed.m}<span className="small">MIN </span></div>
-      },
+    },
   },
   {
     title: 'Kills',
@@ -161,7 +167,7 @@ const Table = (props)=>{
 }
 
 const remoteData = (query) => {
-  console.log("Query object - ", query)
+  //console.log("Query object - ", query)
   return client.query({
     query: getBrStats,
     variables: {
@@ -171,7 +177,7 @@ const remoteData = (query) => {
       filter: resolveFilter(query),
     }
   }).then((res) => {
-    console.dir(query)
+    //console.dir(query)
     return {
       data: JSON.parse(JSON.stringify(res.data.brStatPagination.items)), // this map is to avoid the error Cannot add property tableData, object is not extensible
       page: query.page,

@@ -35,6 +35,13 @@ function App() {
               </div>
             </div>
           </Route>
+          <Route path="/ortonators">
+            <div className="App">
+              <div style={{width:'95%',margin:"40px auto"}}>
+                <Table team="Ortonators" />
+              </div>
+            </div>
+          </Route>
           <Route path="/">
             Please Select your Team:
             <nav>
@@ -47,6 +54,9 @@ function App() {
                 </li>
                 <li>
                   <Link to="/a-team">A-Team</Link>
+                </li>
+                <li>
+                  <Link to="/ortonators">Ortonators</Link>
                 </li>
               </ul>
             </nav>
