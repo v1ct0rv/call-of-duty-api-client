@@ -12,7 +12,7 @@ const playerMatchesService = class PlayerMatchesService {
   async init() {
     // Create Collection is not exists
     this.playerMatches = this.database.collection('playermatches')
-    
+
     await this.playerMatches.createIndex({
       platform: 1,
       username: 1,
@@ -80,13 +80,13 @@ const playerMatchesService = class PlayerMatchesService {
   async forceReSyncAllMatches() {
     console.time(`forceReSyncAllMatches`)
     console.log(`Forcing all matches to resync...`)
-    
+
     const result = await this.playerMatches.updateMany({ sync: true }, {
       $set: {
         sync: false
       }
     })
-    
+
     console.log(`${result.modifiedCount} matches were set to resync...`)
     console.timeEnd(`forceReSyncAllMatches`)
   }
@@ -99,7 +99,7 @@ const playerMatchesService = class PlayerMatchesService {
     const options = {
       sort: { utcStartSeconds: -1 }
     }
-    
+
     return await this.playerMatches.findOne({platform, username : gamertag, "playerStats.teamPlacement": 1, mode: {$in: constants.BR_MODES}}, options)
   }
 
@@ -119,7 +119,7 @@ const playerMatchesService = class PlayerMatchesService {
       let end = moment(start).add(2, 'hours')
       console.log(`[${new Date().toISOString()}] Getting old matches for gamertag '${gamertag}' and platform '${platform}' from '${start.format('YYYY-MM-DD HH:mm:ss')}' to '${end.format('YYYY-MM-DD HH:mm:ss')}'`)
       let oldMatchesData
-      try { 
+      try {
         oldMatchesData = await this.API.MWcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
       } catch (error) {
         console.log(`'${error.toLowerCase()}'`)
@@ -171,6 +171,8 @@ const playerMatchesService = class PlayerMatchesService {
       // // Sleep to avoid errors too many requests
       // await this.sleep(this.randomIntFromInterval(1200, 5000))
     }
+
+    this.trackedGamersService.setOldMatchesSynched(gamertag, platform)
 
     console.log(`[${new Date().toISOString()}] All Old matches are synched for ${gamertag}, skipping...`)
 

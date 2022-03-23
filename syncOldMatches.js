@@ -47,7 +47,7 @@ const syncMatchesJob = async function () {
     }
     console.timeEnd('login')
 
-    const gamers = await trackedGamersService.getAll()
+    const gamers = await trackedGamersService.getAllOldMatchesNotSynched()
 
     for (const gamer of gamers) {
       // force Resync Old Matches
