@@ -55,6 +55,9 @@ const trackedGamersService = class TrackedGamersService {
     return await this.trackedGamers.updateOne(gamer, {
       $set: {
         disabled: false
+      },
+      $unset: {
+        reason: 1
       }
     })
   }
