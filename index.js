@@ -10,6 +10,11 @@ const scheduler = new ToadScheduler()
 // }
 // start()
 
+// const start = async function () {
+//   await statsJob()
+// }
+// start()
+
 const statsGrabberTask = new AsyncTask(
     'Call of Duty Stats Grabber',
     () => { return statsJob().then((result) => { console.log(`[${new Date().toISOString()}]: Stats Job Finished.`) }) },
