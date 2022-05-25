@@ -10,6 +10,7 @@ const RebirthStatsSchema = new Schema({
   },
   platform: String,
   username: { type: String, index: true },
+  teams: { type: [String], index: true },
   gamesPlayed: { type: Number, index: true },
   kills: { type: Number, index: true },
   deaths: { type: Number, index: true },

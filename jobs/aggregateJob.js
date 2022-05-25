@@ -37,6 +37,7 @@ const aggregateJob = async function () {
     for (const gamer of gamers) {
       let gamertag = gamer.gamertag
       let platform = gamer.platform
+      let teams = gamer.teams
       let date = getCurrentDateWithoutTime()
       console.log(`[${new Date().toISOString()}] Processing (Aggregate) Stats for '${gamertag}' and platform '${platform}'...`)
 
@@ -95,6 +96,8 @@ const aggregateJob = async function () {
         rebithStats.username = gamertag
         rebithStats.platform = platform
         rebithStats.date = date
+        rebithStats.teams = teams
+
         rebithStats.kdRatio = rebithStats.kills/rebithStats.deaths
         //rebithStats.kdRatio = Math.round(((rebithStats.kills/rebithStats.deaths) + Number.EPSILON) * 100) / 100
 
