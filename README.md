@@ -5,6 +5,7 @@
 You need to set the following environment variables (or create .env file):
 
 *STATS_JOB_INTERVAL: Interval to get stats, this value is in seconds, 20 for example.
+*AGGREGATE_JOB_INTERVAL: Interval to aggregate stats, this value is in seconds, 20 for example.
 *MONGO_DB_URI: Mongo DB url, for example mongodb://root:password@localhost:27017/
 *TZ timezone, the recommended value is UTC
 *AUTHENTICATION_MODE the auth mode can be `sso` or `username`, `sso` is the recommended option.

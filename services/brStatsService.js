@@ -1,11 +1,10 @@
 var moment = require('moment')
 
 const brStatsService = class BrStatsService {
-  constructor(mongoClient, database, api, playerMatchesService) {
+  constructor(mongoClient, database, api) {
     this.mongoClient = mongoClient
     this.database = database
     this.API = api
-    this.playerMatchesService = playerMatchesService
   }
 
   async init() {
@@ -41,24 +40,6 @@ const brStatsService = class BrStatsService {
     brData.gamesPerWin = brData.gamesPlayed/brData.wins
     brData.killsPerMin = brData.kills/(brData.timePlayed / 60)
 
-    // Set last win data
-    console.time(`getLastWin ${gamertag}`)
-    const lastWin = await this.playerMatchesService.getLastWinMatch(gamertag, platform)
-    console.timeEnd(`getLastWin ${gamertag}`)
-
-    if(lastWin) {
-      const lastWinDate = moment.unix(lastWin.utcStartSeconds)
-      console.log(`[${new Date().toISOString()}] ${gamertag} last win match id: ${lastWin.matchID} on ${lastWinDate.utcOffset(-300).format('YYYY-MM-DD hh:mm:ss')}`)
-      brData.lastWin = {
-        matchID: lastWin.matchID,
-        date: lastWinDate.toDate(),
-        utcStartSeconds: lastWin.utcStartSeconds,
-        utcEndSeconds: lastWin.utcEndSeconds,
-        playerStats: lastWin.playerStats,
-      }
-
-    }
-
     await this.brstats.updateOne({
       username: gamertag,
       platform: platform,
@@ -69,6 +50,19 @@ const brStatsService = class BrStatsService {
       upsert: true
     })
     console.timeEnd(`brstats ${gamertag}`)
+  }
+
+  async saveLastWin(gamertag, platform, date, lastWinObj) {
+    await this.brstats.updateOne({
+      username: gamertag,
+      platform: platform,
+      date: date,
+    }, {
+      $set: {
+        lastUpdate: new Date(),
+        lastWin: lastWinObj
+      }
+    })
   }
 
   async getAll() {

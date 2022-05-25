@@ -1,7 +1,7 @@
 Collection playerMatches
 
 All Modes
-db.getCollection('playermatches').distinct("mode")
+db.getCollection('playermatches').distinct("mode").sort()
 
 
 All Mogo Wins by plattform and gamertag orderby date desc
@@ -9,6 +9,9 @@ db.getCollection('playermatches').find({"platform" : "battle", "username" : "elm
 
 Last VictorV Win by plattform and gamertag
 db.getCollection('playermatches').find({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1}).sort( { utcStartSeconds: -1 } ).limit(1)
+
+All VictorV Rebirth Wins
+db.getCollection('playermatches').find({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1, "mode": {$in: ["br_rebirth_rbrthsolos", "br_rebirth_rbrthduos", "br_rebirth_rbrthtrios", "br_rebirth_rbrthquad", "br_rebirth_rbrthex"]}}).sort( { utcStartSeconds: -1 } )
 
 All VictorV Wins
 db.getCollection('playermatches').find({"platform" : "battle", "username" : "v1ct0rv#1393", "playerStats.teamPlacement": 1, "mode": {$in: [ "br_brquads","br_brtrios","br_brduos","br_brsolos", "br_brsolo", "br_vg_royale_quads", "br_vg_royale_trios", "br_vg_royale_duos", "br_vg_royale_solos", "br_vg_royale_solo", "br_br_real", "br_dbd_dbd", "br_vov_op_flash", "br_brz_brquads", "br_brz_brtrios", "br_brz_brduos", "br_brbbquad", "br_brbbtrio", "br_brbbduo", "br_brbbsolo", "br_br_quads", "br_brhwnquad", "br_brhwntrios", "br_brduohwn", "br_brsolohwn", "br_buy_back_quads", "br_buy_back_trios", "br_buy_back_duos", "br_buy_back_solo", "br_mendota_playlist_wz330/op_mon" ]}}).sort( { utcStartSeconds: -1 } )

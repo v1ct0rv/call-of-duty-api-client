@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js --ignore frontend-app/"
+    "start": "nodemon server.js --ignore frontend-app/",
+    "index": "node index.js"
   },
   "author": "",
   "license": "ISC",

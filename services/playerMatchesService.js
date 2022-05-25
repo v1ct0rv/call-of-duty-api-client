@@ -103,6 +103,55 @@ const playerMatchesService = class PlayerMatchesService {
     return await this.playerMatches.findOne({platform, username : gamertag, "playerStats.teamPlacement": 1, mode: {$in: constants.BR_MODES}}, options)
   }
 
+  async getRebirthWinStats(gamertag, platform) {
+    const aggCursor = this.playerMatches.aggregate( [
+        // Stage 1: Filter by All PLayer Rebirth Wins
+        {
+          $match: {platform, username : gamertag, "playerStats.teamPlacement": 1, "mode": {$in: constants.REBIRTH_MODES}}
+        },
+        // Stage 2: sort by utcStartSeconds to get last match
+        {
+          $sort: {
+              utcStartSeconds: -1
+            }
+        },
+        // Stage 3: Count and get MaxKills and LongestStreaks in a win an last won match
+        {
+          $group: { _id: "", wins: {$sum:1}, maxKillsWin: { $max: "$playerStats.kills" }, longestStreakWin: { $max: "$playerStats.longestStreak" }, lastWin: {
+                    "$first": "$$ROOT"
+                } }
+        }
+      ] )
+      
+      var results = []
+      for await (const doc of aggCursor) {
+        results.push(doc)
+      }
+
+      return results[0]
+  }
+
+  async getRebirthStats(gamertag, platform) {
+    const aggCursor = this.playerMatches.aggregate( [
+         // Stage 1: Filter by All PLayer Rebirth Matches
+         {
+            $match: {platform, username : gamertag, "mode": {$in: constants.REBIRTH_MODES}}
+         },
+         // Stage 2:Count and get Kills, deatchs, MaxKills and LongestStreaks
+         {
+            $group: { _id: "", gamesPlayed: {$sum:1}, kills: { $sum: "$playerStats.kills" }, deaths: { $sum: "$playerStats.deaths" }, maxKills: { $max: "$playerStats.kills" }, longestStreak: { $max: "$playerStats.longestStreak" }, timePlayed: { $sum: "$playerStats.timePlayed" } }
+         }
+      ] )
+
+      var results = []
+      for await (const doc of aggCursor) {
+        results.push(doc)
+      }
+
+      return results[0]
+
+  }
+
   async syncOldMatches(gamer) {
     const gamertag = gamer.gamertag
     const platform = gamer.platform
