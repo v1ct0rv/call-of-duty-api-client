@@ -60,7 +60,7 @@ const brStatsService = class BrStatsService {
     }, {
       $set: {
         lastUpdate: new Date(),
-        lastWin: lastWinObj
+        'br.lastWin': lastWinObj
       }
     })
   }
