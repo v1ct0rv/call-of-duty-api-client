@@ -66,8 +66,28 @@ const brStatsService = class BrStatsService {
     }, {
       $set: {
         lastUpdate: new Date(),
-        'br.lastWin': lastWinObj
+        'br.lastWin': lastWinObj,
       }
+    })
+  }
+
+  async save(brstatsData) {
+    await this.brstats.updateOne({
+      username: brstatsData.username,
+      platform: brstatsData.platform,
+      date: brstatsData.date,
+    }, {
+      $set: brstatsData
+    }, {
+      upsert: true
+    })
+  }
+
+  async get(gamertag, platform, date) {
+    return await this.brstats.findOne({
+      username: gamertag,
+      platform: platform,
+      date: date,
     })
   }
 

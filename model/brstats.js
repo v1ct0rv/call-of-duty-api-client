@@ -28,6 +28,10 @@ const BRStatsSchema = new Schema({
     killsPerGame: { type: Number, index: true },
     gamesPerWin: { type: Number, index: true },
     killsPerMin: { type: Number, index: true },
+    maxKills: { type: Number, index: true },
+    longestStreak: { type: Number, index: true },
+    maxKillsWin: { type: Number, index: true },
+    longestStreakWin: { type: Number, index: true },
     lastWin: {
       matchID: { type: String },
       date: {

@@ -41,49 +41,41 @@ const aggregateJob = async function () {
       let date = getCurrentDateWithoutTime()
       console.log(`[${new Date().toISOString()}] Processing (Aggregate) Stats for '${gamertag}' and platform '${platform}'...`)
 
-      console.log(`Getting maxKills and longestStreaks in a BR win...`)
+      // Load current brStatData
+      const brStatData = await brStatsService.get(gamertag, platform, date)
 
-      // TODO update brstats with maxKills and longestStreaks in a BR win.
+      if(brStatData) {
+        console.log(`Getting maxKills and longestStreaks in a BR win...`)
 
-      //   db.getCollection('playermatches').aggregate( [
-      //    // Stage 1: Filter All Moga BR Wins
-      //    {
-      //       $match: {"platform" : "battle", "username" : "elmogo06#1516", "playerStats.teamPlacement": 1, "mode": {$in: [ "br_brquads","br_brtrios","br_brduos","br_brsolos", "br_brsolo", "br_vg_royale_quads", "br_vg_royale_trios", "br_vg_royale_duos", "br_vg_royale_solos", "br_vg_royale_solo", "br_br_real", "br_dbd_dbd", "br_vov_op_flash", "br_brz_brquads", "br_brz_brtrios", "br_brz_brduos", "br_brbbquad", "br_brbbtrio", "br_brbbduo", "br_brbbsolo", "br_br_quads", "br_brhwnquad", "br_brhwntrios", "br_brduohwn", "br_brsolohwn", "br_buy_back_quads", "br_buy_back_trios", "br_buy_back_duos", "br_buy_back_solo", "br_mendota_playlist_wz330/op_mon" ]}}
-      //    },
-      //    // Stage 2: Sort by Kills desc
-      //    {
-      //        $sort: {
-      //          "playerStats.kills": -1
-      //        }
-      //    },
-      //    // Stage 3: Group remaining documents and calculate total wins and maxKills
-      //    {
-      //       $group: { _id: "", wins: {$sum:1}, maxKills: { $max: "$playerStats.kills" }, longestStreak: { $max: "$playerStats.longestStreak" }, "doc": {
-      //                 "$first": "$$ROOT"
-      //             } }
-      //    }
-      // ] )
+        // Update brstats with maxKills and longestStreaks in a BR win.
+        const maxBRStats = await playerMatchesService.getMaxBRStats(gamertag, platform)
+        brStatData.br.maxKills = maxBRStats.maxKills
+        brStatData.br.longestStreak = maxBRStats.longestStreak
 
-      console.log(`Getting Last Win data...`)
+        // Set last win data
+        console.log(`Getting Last Win data...`)
+        console.time(`getLastWin ${gamertag}`)
+        const winStats = await playerMatchesService.getLastWinMatch(gamertag, platform)
+        console.timeEnd(`getLastWin ${gamertag}`)
 
-      // Set last win data
-      console.time(`getLastWin ${gamertag}`)
-      const lastWin = await playerMatchesService.getLastWinMatch(gamertag, platform)
-      console.timeEnd(`getLastWin ${gamertag}`)
+        if(winStats && winStats.lastWin) {
+          const lastWinDate = moment.unix(winStats.lastWin.utcStartSeconds)
+          console.log(`[${new Date().toISOString()}] ${gamertag} last win match id: ${winStats.lastWin.matchID} on ${lastWinDate.utcOffset(-300).format('YYYY-MM-DD hh:mm:ss')}`)
+          brStatData.br.lastWin = {
+            matchID: winStats.lastWin.matchID,
+            date: lastWinDate.toDate(),
+            utcStartSeconds: winStats.lastWin.utcStartSeconds,
+            utcEndSeconds: winStats.lastWin.utcEndSeconds,
+            playerStats: winStats.lastWin.playerStats,
+          }
 
-      if(lastWin) {
-        const lastWinDate = moment.unix(lastWin.utcStartSeconds)
-        console.log(`[${new Date().toISOString()}] ${gamertag} last win match id: ${lastWin.matchID} on ${lastWinDate.utcOffset(-300).format('YYYY-MM-DD hh:mm:ss')}`)
-        lastWinObj = {
-          matchID: lastWin.matchID,
-          date: lastWinDate.toDate(),
-          utcStartSeconds: lastWin.utcStartSeconds,
-          utcEndSeconds: lastWin.utcEndSeconds,
-          playerStats: lastWin.playerStats,
+          brStatData.br.maxKillsWin = winStats.maxKillsWin
+          brStatData.br.longestStreakWin = winStats.longestStreakWin
         }
 
         // Save
-        await brStatsService.saveLastWin(gamertag, platform, date, lastWinObj)
+        brStatData.lastUpdate = new Date()
+        await brStatsService.save(brStatData)
       }
 
       console.log(`Getting rebirth stats for '${gamertag}' and platform '${platform}'...`)

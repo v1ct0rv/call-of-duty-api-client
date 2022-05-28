@@ -17,6 +17,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { client, getBrStats } from "./graphql";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -142,26 +143,32 @@ const tableColumnConfig = [{
   }
 ]
 
-let team;
+let teamName;
 
 const Table = (props)=>{
-  team = props.team
+  const { team } = useParams();
+  teamName = team
+
   return (
-    <div>
-      <MaterialTable
-        icons={tableIcons}
-        columns={tableColumnConfig}
-        data={remoteData}
-        title={team + " Team"}
-        options={{
-          toolbar: true,
-          sorting: true,
-          draggable: true,
-          pageSize: 20,
-          thirdSortClick: false,
-          exportButton: true
-        }}
-      />
+    <div className="App">
+      <div style={{ width: '95%', margin: "40px auto" }}>
+        <div>
+          <MaterialTable
+            icons={tableIcons}
+            columns={tableColumnConfig}
+            data={remoteData}
+            title={teamName + " Team"}
+            options={{
+              toolbar: true,
+              sorting: true,
+              draggable: true,
+              pageSize: 20,
+              thirdSortClick: false,
+              exportButton: true
+            }}
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -202,7 +209,7 @@ function resolveFilter(query) {
         gte: new Date().toISOString().substring(0, 10) // UTC Date
       },
       teams: {
-        in: team.toLowerCase()
+        in: teamName.toLowerCase()
       }
     }
   }
