@@ -40,10 +40,14 @@ const brStatsService = class BrStatsService {
     brData.gamesPerWin = brData.gamesPlayed/brData.wins
     brData.killsPerMin = brData.kills/(brData.timePlayed / 60)
 
-    // Complete with lastwin if exists
+    // Complete existing data
     let currentStats = await this.brstats.findOne({username : gamertag, platform, date: date})
-    if(currentStats?.br?.lastWin) {
+    if(currentStats?.br) {
       brstatsData.br.lastWin = currentStats.br.lastWin
+      brstatsData.br.longestStreak = currentStats.br.longestStreak
+      brstatsData.br.longestStreakWin = currentStats.br.longestStreakWin
+      brstatsData.br.maxKills = currentStats.br.maxKills
+      brstatsData.br.maxKillsWin = currentStats.br.maxKillsWin
     }
 
     await this.brstats.updateOne({

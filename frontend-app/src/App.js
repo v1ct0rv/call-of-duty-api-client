@@ -1,7 +1,6 @@
 import '@progress/kendo-theme-default/dist/all.css';
 import './App.css';
-import Table from "./components/Table"
-import StatsGrid from "./components/StatsGrid"
+import StatsContainer from "./components/StatsContainer"
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,23 +27,23 @@ function App() {
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/:team" exact children={<Table/>} />
-            <Route path="/:team/rebirth" children={<StatsGrid/>} />
+            {/* <Route path="/:team" exact children={<Table/>} /> */}
+            <Route path="/:team/:mode" children={<StatsContainer/>} />
             <Route path="/">
               Please Select your Team:
               <nav>
                 <ul>
                   <li>
-                    <Link to="/hackzone">Hackzone</Link>
+                    <Link to="/hackzone/br">Hackzone</Link>
                   </li>
                   <li>
-                    <Link to="/warzone">Warzone</Link>
+                    <Link to="/warzone/br">Warzone</Link>
                   </li>
                   <li>
-                    <Link to="/a-team">A-Team</Link>
+                    <Link to="/a-team/br">A-Team</Link>
                   </li>
                   <li>
-                    <Link to="/ortonators">Ortonators</Link>
+                    <Link to="/ortonators/br">Ortonators</Link>
                   </li>
                 </ul>
               </nav>

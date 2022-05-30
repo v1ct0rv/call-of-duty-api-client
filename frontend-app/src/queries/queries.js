@@ -1,8 +1,8 @@
 import {  gql } from "@apollo/client";
 
 const getRebirthStatsQuery = gql`
-query ($filter: FilterFindManyrebirthstatsInput!) {
-  rebirthStatMany(filter: $filter) {
+  query ($filter: FilterFindManyrebirthstatsInput!) {
+    rebirthStatMany(filter: $filter) {
       username
       wins
       kdRatio
@@ -25,51 +25,29 @@ query ($filter: FilterFindManyrebirthstatsInput!) {
 `
 
 const getBrStatsQuery = gql`
-  query($page: Int, $perPage: Int, $sort: SortFindManybrstatsInput, $filter:  FilterFindManybrstatsInput){
-    brStatPagination(page: $page, perPage: $perPage, sort: $sort, filter: $filter) {
-      count
-      pageInfo {
-        pageCount
-        itemCount
-        hasNextPage
-        hasPreviousPage
-      }
-      items {
-        lastUpdate
-        platform
-        username
-        teams
-        br {
-          wins
-          kills
-          deaths
-          kdRatio
-          timePlayed
-          gamesPlayed
-          downs
-          revives
-          scorePerMinute
-          topFive
-          topTen
-          topTwentyFive
-          winsPercent
-          killsPerGame
-          gamesPerWin
-          killsPerMin
-          lastWin {
-            matchID
-            date
-            playerStats {
-              kills
-              deaths
-              kdRatio
-              gulagDeaths
-            }
-          }
+  query ($filter: FilterFindManybrstatsInput!) {
+    brStatMany(filter: $filter) {
+      lastUpdate
+      username
+      br {
+        wins
+        kdRatio
+        kills
+        deaths
+        winsPercent
+        gamesPerWin
+        timePlayed
+        lastWin {
+          matchID
+          date
         }
+        longestStreak
+        longestStreakWin
+        maxKills
+        maxKillsWin
       }
     }
-  }
+}
 `
 
 export { getBrStatsQuery, getRebirthStatsQuery };

@@ -19,6 +19,7 @@
     "@progress/kendo-react-grid": "^5.3.0",
     "@progress/kendo-react-inputs": "^5.3.0",
     "@progress/kendo-react-intl": "^5.3.0",
+    "@progress/kendo-react-layout": "^5.3.0",
     "@progress/kendo-react-treeview": "^5.3.0",
     "@progress/kendo-theme-default": "^5.4.1",
     "@testing-library/jest-dom": "^5.14.1",
