@@ -2,6 +2,7 @@ import * as React from 'react';
 import StatsGrid from "./StatsGrid"
 import { TabStrip, TabStripTab } from '@progress/kendo-react-layout';
 import { useParams } from "react-router-dom";
+import ReactGA from 'react-ga';
 
 const StatsContainer = (props) => {
 
@@ -12,6 +13,11 @@ const StatsContainer = (props) => {
   const [selected, setSelected] = React.useState(selectedTab);
 
   const handleSelect = e => {
+    if(e.selected === 1) {
+      ReactGA.pageview((window.location.pathname + window.location.search).replace("br", "rebirth"));
+    } else {
+      ReactGA.pageview((window.location.pathname + window.location.search));
+    }
     setSelected(e.selected);
   };
 
