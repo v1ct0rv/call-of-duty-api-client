@@ -6,13 +6,15 @@ import moment from "moment";
 import { process } from '@progress/kendo-data-query';
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { ExcelExport } from '@progress/kendo-react-excel-export';
+import { SvgIcon } from "@progress/kendo-react-common";
+import { hyperlinkOpenSmIcon } from "@progress/kendo-svg-icons";
 
 const lastWinCell = (props) => {
   const field = "lastWin" //props.field || "";
   return (
     <td>
       <span title={moment(props.dataItem[field].date).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem[field].matchID}/`} target="_blank" rel="
-        noreferrer">{moment(props.dataItem[field].date).fromNow()}</a></span>
+        noreferrer">{moment(props.dataItem[field].date).fromNow()} <SvgIcon icon={hyperlinkOpenSmIcon} size="small" /></a></span>
     </td>
   );
 }
