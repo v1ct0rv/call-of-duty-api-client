@@ -47,7 +47,13 @@ const syncMatchesJob = async function () {
     }
     console.timeEnd('login')
 
-    const gamers = await trackedGamersService.getAllOldMatchesNotSynched()
+    const SINGLE_GAMER = process.env.SINGLE_GAMER || false;
+    let gamers = []
+    if (SINGLE_GAMER === 'true') {
+      gamers.push(await trackedGamersService.get(process.env.SINGLE_GAMERTAG, process.env.SINGLE_GAMER_PLATFORM))
+    } else {
+      gamers = await trackedGamersService.getAllOldMatchesNotSynched()
+    }
 
     for (const gamer of gamers) {
       // force Resync Old Matches
