@@ -86,6 +86,10 @@
   gamertag: 'litospitt'
   teams:
     - warzone
+- platform: psn
+  gamertag: 'ElGrone_04'
+  teams:
+    - warzone
 - platform: battle
   gamertag: 'ralphdoe#1738'
   teams:

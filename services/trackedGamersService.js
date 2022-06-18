@@ -19,7 +19,7 @@ const trackedGamersService = class TrackedGamersService {
     });
 
     // bootstrap data
-    this.bootstrapData()
+    await this.bootstrapData()
   }
 
   async add(gamertag, platform) {

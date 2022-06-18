@@ -31,7 +31,13 @@ const aggregateJob = async function () {
     const brStatsService = new BrStatsService(client, database, null)
     await brStatsService.init()
 
-     const gamers = await trackedGamersService.getAll()
+    const SINGLE_GAMER = process.env.SINGLE_GAMER || false;
+    let gamers = []
+    if (SINGLE_GAMER === 'true') {
+      gamers.push(await trackedGamersService.get(process.env.SINGLE_GAMERTAG, process.env.SINGLE_GAMER_PLATFORM))
+    } else {
+      gamers = await trackedGamersService.getAll()
+    }
 
     console.time('AggregateStats')
     for (const gamer of gamers) {

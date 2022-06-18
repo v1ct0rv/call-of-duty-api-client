@@ -58,7 +58,13 @@ const statsJob = async function () {
     }
     console.timeEnd('login')
 
-    const gamers = await trackedGamersService.getAll()
+    const SINGLE_GAMER = process.env.SINGLE_GAMER || false;
+    let gamers = []
+    if (SINGLE_GAMER === 'true') {
+      gamers.push(await trackedGamersService.get(process.env.SINGLE_GAMERTAG, process.env.SINGLE_GAMER_PLATFORM))
+    } else {
+      gamers = await trackedGamersService.getAll()
+    }
 
     console.time('AllStats')
     for (const gamer of gamers) {
