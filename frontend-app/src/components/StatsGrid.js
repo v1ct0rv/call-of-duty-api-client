@@ -11,12 +11,20 @@ import { hyperlinkOpenSmIcon } from "@progress/kendo-svg-icons";
 
 const lastWinCell = (props) => {
   const field = "lastWin" //props.field || "";
-  return (
-    <td>
-      <span title={moment(props.dataItem[field].date).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem[field].matchID}/`} target="_blank" rel="
-        noreferrer">{moment(props.dataItem[field].date).fromNow()} <SvgIcon icon={hyperlinkOpenSmIcon} size="small" /></a></span>
-    </td>
-  );
+  if(props.dataItem[field] &&  props.dataItem[field].matchID) {
+    return (
+      <td>
+        <span title={moment(props.dataItem[field].date).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem[field].matchID}/`} target="_blank" rel="
+          noreferrer">{moment(props.dataItem[field].date).fromNow()} <SvgIcon icon={hyperlinkOpenSmIcon} size="small" /></a></span>
+      </td>
+    );
+  } else {
+    return (
+      <td>
+        Never
+      </td>
+    )
+  }
 }
 
 const winIsWinCell = (props) => {
