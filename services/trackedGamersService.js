@@ -87,7 +87,7 @@ const trackedGamersService = class TrackedGamersService {
   }
 
   async getAll() {
-    const cursor = await this.trackedGamers.find({})
+    const cursor = await this.trackedGamers.find({ $or: [{disabled: { $exists: false}}, { disabled: false }]})
     try {
       return await cursor.toArray()
     } finally {

@@ -48,6 +48,9 @@ const brStatsService = class BrStatsService {
       brstatsData.br.longestStreakWin = currentStats.br.longestStreakWin
       brstatsData.br.maxKills = currentStats.br.maxKills
       brstatsData.br.maxKillsWin = currentStats.br.maxKillsWin
+      brstatsData.br.winIsWin = currentStats.br.winIsWin
+      brstatsData.br.lastWinIsWinMatchId = currentStats.br.lastWinIsWinMatchId
+      brstatsData.br.lastWinIsWinDate = currentStats.br.lastWinIsWinDate
     }
 
     await this.brstats.updateOne({

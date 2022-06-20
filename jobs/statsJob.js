@@ -83,10 +83,11 @@ const statsJob = async function () {
       console.log(`Getting data for gamertag: '${gamertag}', platform: '${platform}'`)
 
       try {
+        // Skipping lifetimeStatsService we are not using it for now...
         // Lifetime Statistics
-        console.log(`Getting Lifetime Statistics...`)
-        await lifetimeStatsService.add(gamertag, platform, date)
-        await sleep(randomIntFromInterval(500, 1500))
+        // console.log(`Getting Lifetime Statistics...`)
+        // await lifetimeStatsService.add(gamertag, platform, date)
+        // await sleep(randomIntFromInterval(500, 1500))
 
         // Recent Match Details
         console.log(`Getting Recent Match Details...`)
@@ -109,7 +110,7 @@ const statsJob = async function () {
         //Handle Exception
         console.log(`Error Getting data for gamertag: '${gamertag}', platform: '${platform}'`)
         console.error(error)
-        await trackedGamersService.disableGamer(gamertag, platform, error);
+        // await trackedGamersService.disableGamer(gamertag, platform, error);
       }
     }
 

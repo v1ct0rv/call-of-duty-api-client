@@ -38,6 +38,18 @@
   gamertag: nickchain
   teams:
     - hackzone
+- platform: psn
+  gamertag: mincho007
+  teams:
+    - hackzone
+- platform: psn
+  gamertag: mmug26
+  teams:
+    - hackzone
+- platform: acti
+  gamertag: mpinedat#3074182
+  teams:
+    - hackzone
 - platform: battle
   gamertag: 'kgb2283#1956'
   teams:
@@ -86,8 +98,8 @@
   gamertag: 'litospitt'
   teams:
     - warzone
-- platform: psn
-  gamertag: 'ElGrone_04'
+- platform: acti
+  gamertag: elgrone_04#7949144
   teams:
     - warzone
 - platform: battle

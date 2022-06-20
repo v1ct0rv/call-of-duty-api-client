@@ -20,6 +20,8 @@ const getRebirthStatsQuery = gql`
       longestStreakWin
       maxKills
       maxKillsWin
+      winIsWin
+      lastWinIsWinMatchId
     }
   }
 `
@@ -45,6 +47,8 @@ const getBrStatsQuery = gql`
         longestStreakWin
         maxKills
         maxKillsWin
+        winIsWin
+        lastWinIsWinMatchId
       }
     }
 }

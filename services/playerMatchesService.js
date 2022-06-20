@@ -21,7 +21,7 @@ const playerMatchesService = class PlayerMatchesService {
       unique: true
     })
     await this.playerMatches.createIndex({
-       sync: 1
+      sync: 1
     })
   }
 
@@ -33,7 +33,7 @@ const playerMatchesService = class PlayerMatchesService {
 
     for (const match of playerMatchesData.matches) {
       // Update UnoId in gamer table if not exists
-      if(!gamer.uno) {
+      if (!gamer.uno) {
         gamer.uno = match.player.uno
         // set player old matches synched
         await this.trackedGamersService.update(gamer)
@@ -59,7 +59,7 @@ const playerMatchesService = class PlayerMatchesService {
   }
 
   async getAllPendingToSync() {
-    const cursor = await this.playerMatches.find({ $or: [{sync: { $exists: false}}, { sync: false }]})
+    const cursor = await this.playerMatches.find({ $or: [{ sync: { $exists: false } }, { sync: false }] })
     try {
       return await cursor.toArray()
     } finally {
@@ -175,6 +175,66 @@ const playerMatchesService = class PlayerMatchesService {
     return results[0]
   }
 
+  async getLast100GamesStats(gamertag, platform, gameMode) {
+    const mode = (gameMode === "br") ? constants.BR_MODES : constants.REBIRTH_MODES
+    const aggCursor = this.playerMatches.aggregate([
+      // Stage 1: Filter by All PLayer Rebirth Matches
+      {
+        $match: { platform, username: gamertag, "mode": { $in: mode } }
+      },
+      // Stage 2: sort the remainder last-first
+      {
+        "$sort": {
+          "utcStartSeconds": -1
+        }
+      },
+      // Stage 3: keep only 100 of the descending order subset
+      {
+        "$limit": 100
+      },
+      // Stage 4: Get Kills, deatchs, MaxKills and LongestStreaks
+      {
+        $group: { _id: "", gamesPlayed: { $sum: 1 }, kills: { $sum: "$playerStats.kills" }, deaths: { $sum: "$playerStats.deaths" }, maxKills: { $max: "$playerStats.kills" }, longestStreak: { $max: "$playerStats.longestStreak" }, timePlayed: { $sum: "$playerStats.timePlayed" } }
+      }
+    ])
+
+    var results = []
+    for await (const doc of aggCursor) {
+      results.push(doc)
+    }
+
+    return results[0]
+  }
+
+  async getWinIsWindata(gamertag, platform, gameMode) {
+    const mode = (gameMode === "br") ? constants.BR_MODES : constants.REBIRTH_MODES
+    const aggCursor = this.playerMatches.aggregate([
+      // Stage 1: Filter by All PLayer Rebirth Wins
+      {
+        $match: { platform, username: gamertag, "playerStats.teamPlacement": 1, "playerStats.kills": 0, "mode": { $in: mode } }
+      },
+      // Stage 2: sort by utcStartSeconds to get last match
+      {
+        $sort: {
+          utcStartSeconds: -1
+        }
+      },
+      // Stage 3: Count and get MaxKills and LongestStreaks in a win an last won match
+      {
+        $group: {
+          _id: "", winIsWin: { $sum: 1 }, lastWinIsWinMatchId: { "$first": "$$ROOT.matchID" }, lastWinIsWinDate: { "$first": "$$ROOT.utcStartSeconds" }
+        }
+      }
+    ])
+
+    var results = []
+    for await (const doc of aggCursor) {
+      results.push(doc)
+    }
+
+    return results[0]
+  }
+
   async getMaxBRStats(gamertag, platform) {
     const aggCursor = this.playerMatches.aggregate([
       // Stage 1: Filter All player BR Matches
@@ -213,10 +273,11 @@ const playerMatchesService = class PlayerMatchesService {
     // Get all matches if this player was not sync before
     console.log(`[${new Date().toISOString()}] Loading old matches for gamertag '${gamertag}' and platform '${platform}'...`)
     // We will iterate from March 10 (Warzone release date) or player last syunc till now, going 2 hours step
-    let wzStart = gamer.lastOldMatchesSyncDate ? moment(gamer.lastOldMatchesSyncDate): moment('2020-03-10')
+    let wzStart = gamer.lastOldMatchesSyncDate ? moment(gamer.lastOldMatchesSyncDate) : moment('2020-03-10')
     let now = moment()
     let startMillis = 0
     let currentMillis = 0
+    let errors = false
     for (var start = moment(wzStart); start.isBefore(now); start.add(2, 'hours')) {
       let end = moment(start).add(2, 'hours')
       console.log(`[${new Date().toISOString()}] Getting old matches for gamertag '${gamertag}' and platform '${platform}' from '${start.format('YYYY-MM-DD HH:mm:ss')}' to '${end.format('YYYY-MM-DD HH:mm:ss')}'`)
@@ -226,15 +287,16 @@ const playerMatchesService = class PlayerMatchesService {
       } catch (error) {
         console.log(`'${error.toLowerCase()}'`)
         // If the errror is not allowed, continue with next gamertag
-        if(error.toLowerCase() === "not permitted: not allowed") {
+        if (error.toLowerCase() === "not permitted: not allowed") {
           start = moment()
           console.error(error)
+          errors = true
           continue
         }
-        throw(error)
+        throw (error)
       }
       //console.dir(oldMatchesData)
-      if(oldMatchesData && oldMatchesData.matches) {
+      if (oldMatchesData && oldMatchesData.matches) {
         console.log(`[${new Date().toISOString()}] ${oldMatchesData.matches.length} old matches received'`)
 
         for (const match of oldMatchesData.matches) {
@@ -274,9 +336,10 @@ const playerMatchesService = class PlayerMatchesService {
       // await this.sleep(this.randomIntFromInterval(1200, 5000))
     }
 
-    this.trackedGamersService.setOldMatchesSynched(gamertag, platform)
-
-    console.log(`[${new Date().toISOString()}] All Old matches are synched for ${gamertag}, skipping...`)
+    if (!errors) {
+      this.trackedGamersService.setOldMatchesSynched(gamertag, platform)
+      console.log(`[${new Date().toISOString()}] All Old matches are synched for ${gamertag}, skipping...`)
+    }
 
     console.timeEnd(`syncOldMatches`)
 

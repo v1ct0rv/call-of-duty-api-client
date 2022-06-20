@@ -25,6 +25,13 @@ const RebirthStatsSchema = new Schema({
   longestStreakWin: { type: Number, index: true },
   winsPercent: { type: Number, index: true },
   gamesPerWin: { type: Number, index: true },
+  winIsWin: { type: Number, index: true },
+  lastWinIsWinMatchId: { type: String },
+  lastWinIsWinDate: {
+    type: Date,
+    default: Date.now,
+    index: true,
+  },
   lastWin: {
     matchID: { type: String },
     date: {

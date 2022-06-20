@@ -19,6 +19,15 @@ const lastWinCell = (props) => {
   );
 }
 
+const winIsWinCell = (props) => {
+  return (
+    <td>
+      <span title={moment(props.dataItem["lastWinIsWinDate"]).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem["lastWinIsWinMatchId"]}/`} target="_blank" rel="
+        noreferrer">{props.dataItem["winIsWin"]} <SvgIcon icon={hyperlinkOpenSmIcon} size="small" /></a></span>
+    </td>
+  );
+}
+
 const timePlayedCell = (props) => {
   const field = props.field || "";
   const parsed = secondsToDhms(props.dataItem[field])
@@ -129,7 +138,8 @@ const StatsGrid = (props) => {
         <GridColumn field="kdRatio" title="KD" format="{0:n2}" width="60px" />
         {/* <GridColumn field="kdRatio" title="KD" cell={props => <td>{props.dataItem[props.field].toFixed(2)}</td>} /> */}
         <GridColumn field="lastWin.date" title="LastWin" cell={lastWinCell} width="170px" />
-        <GridColumn field="kills" title="Kills" width="90px" />
+        <GridColumn field="winIsWin" title="WinIsWin" cell={winIsWinCell} width="110px" />
+        <GridColumn field="kills" title="Kills" width="80px" />
         <GridColumn field="deaths" title="Deaths" width="90px" />
         <GridColumn field="maxKillsWin" title="maxKillsWin" width="100px" />
         <GridColumn field="longestStreak" title="Kill Streak" width="100px" />
