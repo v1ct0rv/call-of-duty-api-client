@@ -28,12 +28,20 @@ const lastWinCell = (props) => {
 }
 
 const winIsWinCell = (props) => {
-  return (
-    <td>
-      <span title={moment(props.dataItem["lastWinIsWinDate"]).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem["lastWinIsWinMatchId"]}/`} target="_blank" rel="
-        noreferrer">{props.dataItem["winIsWin"]} <SvgIcon icon={hyperlinkOpenSmIcon} size="small" /></a></span>
-    </td>
-  );
+  if(props.dataItem["lastWinIsWinMatchId"]) {
+    return (
+      <td>
+        <span title={moment(props.dataItem["lastWinIsWinDate"]).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem["lastWinIsWinMatchId"]}/`} target="_blank" rel="
+          noreferrer">{props.dataItem["winIsWin"]} <SvgIcon icon={hyperlinkOpenSmIcon} size="small" /></a></span>
+      </td>
+    );
+  } else {
+    return (
+        <td>
+          {props.dataItem["winIsWin"]}
+        </td>
+      );
+  }
 }
 
 const timePlayedCell = (props) => {
