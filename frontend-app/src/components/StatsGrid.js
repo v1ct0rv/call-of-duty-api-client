@@ -101,7 +101,7 @@ const StatsGrid = (props) => {
         { field: statsGridSortField, dir: statsGridSortOrder }
       ],
       skip: 0,
-      take: 20
+      take: 50
     }
   }
   );
