@@ -44,6 +44,14 @@ const winIsWinCell = (props) => {
   }
 }
 
+const maxWinsInDayCell = (props) => {
+  return (
+      <td>
+        <span title={moment(props.dataItem["maxWinsInDayDate"]).format('MMMM Do YYYY')}>{props.dataItem["maxWinsInDayCount"]}</span>
+      </td>
+    );
+}
+
 const timePlayedCell = (props) => {
   const field = props.field || "";
   const parsed = secondsToDhms(props.dataItem[field])
@@ -91,7 +99,7 @@ const StatsGrid = (props) => {
   };
 
 
-  const [statsGridSortField, setStatsGridSortField] = useLocalStorage("statsGridSort", "maxKills");
+  const [statsGridSortField, setStatsGridSortField] = useLocalStorage("statsGridSort", "maxWinsInDayCount");
   const [statsGridSortOrder, setStatsGridSortOrder] = useLocalStorage("statsGridSortOrder", "desc");
 
   // Declare a new state variable, which we'll call "state"
@@ -138,6 +146,7 @@ const StatsGrid = (props) => {
         {...state.gridDataState}
         onDataStateChange={handleGridDataStateChange}
         sortable={true}
+        reorderable={true}
       >
         <GridToolbar>
           <button
@@ -154,7 +163,8 @@ const StatsGrid = (props) => {
         <GridColumn field="kdRatio" title="KD" format="{0:n2}" width="60px" />
         {/* <GridColumn field="kdRatio" title="KD" cell={props => <td>{props.dataItem[props.field].toFixed(2)}</td>} /> */}
         <GridColumn field="lastWin.date" title="LastWin" cell={lastWinCell} width="170px" />
-        <GridColumn field="winIsWin" title="WinIsWin" cell={winIsWinCell} width="110px" />
+        <GridColumn field="winIsWin" title="WinIsWin" cell={winIsWinCell} width="100px" />
+        <GridColumn field="maxWinsInDayCount" title="Max Wins in Day" cell={maxWinsInDayCell} width="150px" />
         <GridColumn field="kills" title="Kills" width="80px" />
         <GridColumn field="deaths" title="Deaths" width="90px" />
         <GridColumn field="maxKillsWin" title="maxKillsWin" width="100px" />

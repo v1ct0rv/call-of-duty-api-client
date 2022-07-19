@@ -22,6 +22,8 @@ const getRebirthStatsQuery = gql`
       maxKillsWin
       winIsWin
       lastWinIsWinMatchId
+      maxWinsInDayDate
+      maxWinsInDayCount
     }
   }
 `
@@ -49,6 +51,8 @@ const getBrStatsQuery = gql`
         maxKillsWin
         winIsWin
         lastWinIsWinMatchId
+        maxWinsInDayDate
+        maxWinsInDayCount
       }
     }
 }

@@ -32,6 +32,8 @@ const BRStatsSchema = new Schema({
     longestStreak: { type: Number, index: true },
     maxKillsWin: { type: Number, index: true },
     longestStreakWin: { type: Number, index: true },
+    maxWinsInDayDate: { type: String },
+    maxWinsInDayCount: { type: Number },
     winIsWin: { type: Number, index: true },
     lastWinIsWinMatchId: { type: String },
     lastWinIsWinDate: {

@@ -1,0 +1,68 @@
+FILTERS
+{
+  "filter": {
+    "_operators": {
+      "date": {
+        "gte": "2022-07-19"
+      },
+      "teams": {
+        "in": [
+          "warzone"
+        ]
+      }
+    }
+  }
+}
+
+QUERIES
+query ($filter: FilterFindManybrstatsInput!) {
+  brStatMany(filter: $filter) {
+    lastUpdate
+    username
+    br {
+      wins
+      kdRatio
+      kills
+      deaths
+      winsPercent
+      gamesPerWin
+      timePlayed
+      lastWin {
+        matchID
+        date
+      }
+      longestStreak
+      longestStreakWin
+      maxKills
+      maxKillsWin
+      maxWinsInDayDate
+      maxWinsInDayCount
+    }
+  }
+}
+
+query ($filter: FilterFindManyrebirthstatsInput!) {
+    rebirthStatMany(filter: $filter) {
+      username
+      wins
+      kdRatio
+      kills
+      deaths
+      winsPercent
+      gamesPerWin
+      timePlayed
+      lastWin {
+        matchID
+        date
+      }
+      lastUpdate
+      longestStreak
+      longestStreakWin
+      maxKills
+      maxKillsWin
+      winIsWin
+      lastWinIsWinMatchId
+      maxWinsInDayDate
+      maxWinsInDayCount
+    }
+  }

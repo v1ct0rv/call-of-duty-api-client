@@ -95,6 +95,53 @@ const playerMatchesService = class PlayerMatchesService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  async getMaxWinsInDay(gamertag, platform, offsetSeconds, gameMode) {
+    const mode = (gameMode === "br") ? constants.BR_MODES : constants.REBIRTH_MODES
+    const aggCursor = this.playerMatches.aggregate([
+      // Stage 1: Filter All BR / Rebirth Wins
+      {
+        $match: { platform, username: gamertag, "playerStats.teamPlacement": 1, "mode": { $in: mode } }
+      },
+      // Stage 2: Sort by date desc
+      {
+        $sort: {
+          "utcStartSeconds": -1
+        }
+      },
+      // Stage 3: group by date utcStartSeconds
+      {
+        "$group": {
+          "_id": {
+            "$dateToString": {
+              "format": "%Y-%m-%d",
+              "date": {
+                "$toDate": {
+                  "$multiply": [1000, { "$sum": [offsetSeconds, "$utcStartSeconds"] }] // Sum the offset 5 hours (-18000 secs) then multiply by 1000 (milliseconds)
+                }
+              }
+            }
+          },
+          "count": { "$sum": 1 }
+        }
+      },
+      // Stage 4: Sort by cound desc
+      {
+        $sort: {
+          "count": -1
+        }
+      },
+      // Take the first
+      { $limit: 1 }
+    ])
+
+    var results = []
+    for await (const doc of aggCursor) {
+      results.push(doc)
+    }
+
+    return results[0]
+  }
+
   async getLastWinMatch(gamertag, platform) {
     const aggCursor = this.playerMatches.aggregate([
       // Stage 1: Filter by All PLayer Rebirth Wins

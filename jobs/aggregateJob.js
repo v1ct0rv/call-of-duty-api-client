@@ -99,6 +99,15 @@ const aggregateJob = async function () {
           brStatData.br.winIsWin = 0
         }
 
+        // Get getMaxWinsInDay data
+        console.time(`getMaxWinsInDayData ${gamertag}`)
+        const maxWinsInDay = await playerMatchesService.getMaxWinsInDay(gamertag, platform, gamer.offsetSeconds, "br")
+        console.timeEnd(`getMaxWinsInDayData ${gamertag}`)
+        if(maxWinsInDay) {
+          brStatData.br.maxWinsInDayDate = maxWinsInDay._id
+          brStatData.br.maxWinsInDayCount = maxWinsInDay.count
+        }
+
         // Save
         brStatData.lastUpdate = new Date()
         await brStatsService.save(brStatData)
@@ -148,7 +157,7 @@ const aggregateJob = async function () {
         // Get winIsWin data
         console.log(`Getting rebirth Last WinIsWin data...`)
         console.time(`getWinIsWindata ${gamertag}`)
-        const winIsWindata = await playerMatchesService.getWinIsWindata(gamertag, platform, "rebirht")
+        const winIsWindata = await playerMatchesService.getWinIsWindata(gamertag, platform, "rebirth")
         console.timeEnd(`getWinIsWindata ${gamertag}`)
 
         if(winIsWindata) {
@@ -159,6 +168,14 @@ const aggregateJob = async function () {
           rebithStats.lastWinIsWinDate = lastWinIsWinDate.toDate()
         } else {
           rebithStats.winIsWin = 0
+        }
+
+        console.time(`getMaxWinsInDayData ${gamertag}`)
+        const maxWinsInDay = await playerMatchesService.getMaxWinsInDay(gamertag, platform, gamer.offsetSeconds, "rebirth")
+        console.timeEnd(`getMaxWinsInDayData ${gamertag}`)
+        if(maxWinsInDay) {
+          rebithStats.maxWinsInDayDate = maxWinsInDay._id
+          rebithStats.maxWinsInDayCount = maxWinsInDay.count
         }
 
         // console.log(`[${new Date().toISOString()}] ${gamertag} rebirth stats:`)
@@ -190,7 +207,7 @@ const aggregateJob = async function () {
         console.log(`[${new Date().toISOString()}] ${gamertag} has not last100 games stats`)
       }
 
-      console.log(`Getting last 100 rebirht games stats for '${gamertag}' and platform '${platform}'...`)
+      console.log(`Getting last 100 rebirth games stats for '${gamertag}' and platform '${platform}'...`)
       const last100RebirthGamesStats = await playerMatchesService.getLast100GamesStats(gamertag, platform, "rebirth")
 
       if (last100RebirthGamesStats) {

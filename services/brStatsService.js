@@ -51,6 +51,8 @@ const brStatsService = class BrStatsService {
       brstatsData.br.winIsWin = currentStats.br.winIsWin
       brstatsData.br.lastWinIsWinMatchId = currentStats.br.lastWinIsWinMatchId
       brstatsData.br.lastWinIsWinDate = currentStats.br.lastWinIsWinDate
+      brstatsData.br.maxWinsInDayDate = currentStats.br.maxWinsInDayDate
+      brstatsData.br.maxWinsInDayCount = currentStats.br.maxWinsInDayCount
     }
 
     await this.brstats.updateOne({
