@@ -1,6 +1,6 @@
 import '@progress/kendo-theme-default/dist/all.css';
 import './App.css';
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
 import StatsContainer from "./components/StatsContainer"
 import {
   BrowserRouter as Router,

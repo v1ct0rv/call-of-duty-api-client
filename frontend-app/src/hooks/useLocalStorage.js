@@ -16,7 +16,7 @@ export const useLocalStorage = (key, defaultValue) => {
 
   useEffect(() => {
     // storing input name
-    if(value === undefined){
+    if (value === undefined) {
       localStorage.removeItem(key)
     } else {
       localStorage.setItem(key, JSON.stringify(value))

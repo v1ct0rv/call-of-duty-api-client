@@ -8,10 +8,12 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import { SvgIcon } from "@progress/kendo-react-common";
 import { hyperlinkOpenSmIcon } from "@progress/kendo-svg-icons";
+import { Button } from "@progress/kendo-react-buttons";
+import ReactGA from 'react-ga';
 
 const lastWinCell = (props) => {
   const field = "lastWin" //props.field || "";
-  if(props.dataItem[field] &&  props.dataItem[field].matchID) {
+  if (props.dataItem[field] && props.dataItem[field].matchID) {
     return (
       <td>
         <span title={moment(props.dataItem[field].date).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem[field].matchID}/`} target="_blank" rel="
@@ -28,7 +30,7 @@ const lastWinCell = (props) => {
 }
 
 const winIsWinCell = (props) => {
-  if(props.dataItem["lastWinIsWinMatchId"]) {
+  if (props.dataItem["lastWinIsWinMatchId"]) {
     return (
       <td>
         <span title={moment(props.dataItem["lastWinIsWinDate"]).format('LLL')}><a href={`https://wzstats.gg/match/${props.dataItem["lastWinIsWinMatchId"]}/`} target="_blank" rel="
@@ -37,19 +39,19 @@ const winIsWinCell = (props) => {
     );
   } else {
     return (
-        <td>
-          {props.dataItem["winIsWin"]}
-        </td>
-      );
+      <td>
+        {props.dataItem["winIsWin"]}
+      </td>
+    );
   }
 }
 
 const maxWinsInDayCell = (props) => {
   return (
-      <td>
-        <span title={moment(props.dataItem["maxWinsInDayDate"]).format('MMMM Do YYYY')}>{props.dataItem["maxWinsInDayCount"]}</span>
-      </td>
-    );
+    <td>
+      <span title={moment(props.dataItem["maxWinsInDayDate"]).format('MMMM Do YYYY')}>{props.dataItem["maxWinsInDayCount"]}</span>
+    </td>
+  );
 }
 
 const timePlayedCell = (props) => {
@@ -74,7 +76,7 @@ const StatsGrid = (props) => {
   }
 
   // Load the data
-  const { loading, error, data } = useQuery(query, {
+  const { loading, error, data, refetch } = useQuery(query, {
     variables: {
       filter: {
         _operators: {
@@ -91,8 +93,20 @@ const StatsGrid = (props) => {
     }
   })
 
+  const handleReresh = () => {
+    ReactGA.event({
+      category: 'Refresh',
+      action: `Refresh data team ${team} ${mode} Stats`
+    });
+    refetch()
+  }
+
   const _export = React.useRef(null);
   const excelExport = () => {
+    ReactGA.event({
+      category: 'Export',
+      action: `Excel Export team ${team} ${mode} Stats`
+    });
     if (_export.current !== null) {
       _export.current.save();
     }
@@ -149,13 +163,16 @@ const StatsGrid = (props) => {
         reorderable={true}
       >
         <GridToolbar>
-          <button
+          <Button icon='refresh' title="Refresh" onClick={handleReresh} className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary">
+            Refresh Data
+          </Button >
+          <Button icon='excel'
             title="Export Excel"
             className="k-button k-button-md k-rounded-md k-button-solid k-button-solid-primary"
             onClick={excelExport}
           >
             Export to Excel
-          </button>
+          </Button>
         </GridToolbar>
         <GridColumn field="username" title="Username" width="150px" />
         <GridColumn field="wins" title="Wins" width="80px" />
