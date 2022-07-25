@@ -7,7 +7,7 @@
 # uno     /* numerical representation of Activision ID */
 # all       /* All platforms, used for fuzzySearch */
 - platform: battle
-  gamertag: 'v1ct0rv#1393'
+  gamertag: v1ct0rv#1393
   offsetSeconds: -18000
   teams:
     - hackzone
@@ -15,13 +15,13 @@
     - a-team
     - ortonators
 - platform: battle
-  gamertag: 'elmogo06#1516'
+  gamertag: elmogo06#1516
   offsetSeconds: -18000
   teams:
     - hackzone
     - warzone
 - platform: battle
-  gamertag: 'amauryandrex#2675'
+  gamertag: amauryandrex#2675
   offsetSeconds: -18000
   teams:
     - warzone
@@ -61,7 +61,7 @@
   teams:
     - hackzone
 - platform: battle
-  gamertag: 'kgb2283#1956'
+  gamertag: kgb2283#1956
   offsetSeconds: -18000
   teams:
     - hackzone
@@ -81,17 +81,17 @@
   teams:
     - hackzone
 - platform: battle
-  gamertag: 'dhill#1111'
+  gamertag: dhill#1111
   offsetSeconds: -18000
   teams:
     - hackzone
 - platform: battle
-  gamertag: 'zombiellama#11147'
+  gamertag: zombiellama#11147
   offsetSeconds: -18000
   teams:
     - hackzone
 - platform: battle
-  gamertag: 'jomacaf#1430'
+  gamertag: jomacaf#1430
   offsetSeconds: -18000
   teams:
     - hackzone
@@ -106,17 +106,17 @@
   teams:
     - hackzone
 - platform: battle
-  gamertag: 'dpatino#1140'
+  gamertag: dpatino#1140
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: psn
-  gamertag: 'juanchotoro420'
+  gamertag: juanchotoro420
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: psn
-  gamertag: 'litospitt'
+  gamertag: litospitt
   offsetSeconds: -18000
   teams:
     - warzone
@@ -126,27 +126,27 @@
   teams:
     - warzone
 - platform: battle
-  gamertag: 'ralphdoe#1738'
+  gamertag: ralphdoe#1738
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: psn
-  gamertag: 'daniel_2202'
+  gamertag: daniel_2202
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: psn
-  gamertag: 'lucho_arm'
+  gamertag: lucho_arm
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: psn
-  gamertag: 'milovar'
+  gamertag: milovar
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: psn
-  gamertag: 'Alejo_Fenrir'
+  gamertag: Alejo_Fenrir
   offsetSeconds: -18000
   teams:
     - warzone
@@ -156,42 +156,62 @@
   teams:
     - hackzone
 - platform: battle
-  gamertag: 'andresscalle#1190'
+  gamertag: andresscalle#1190
   offsetSeconds: -18000
   teams:
     - warzone
 - platform: battle
-  gamertag: 'donparcerotv#1292'
+  gamertag: donparcerotv#1292
   offsetSeconds: -18000
   teams:
     - ortonators
 - platform: battle
-  gamertag: 'ozzy23#11727'
+  gamertag: ozzy23#11727
   offsetSeconds: -18000
   teams:
     - ortonators
 - platform: battle
-  gamertag: 'akiraco#1298'
+  gamertag: akiraco#1298
   offsetSeconds: -18000
   teams:
     - ortonators
 - platform: battle
-  gamertag: 'fire#2596'
+  gamertag: fire#2596
   offsetSeconds: -18000
   teams:
     - ortonators
 - platform: battle
-  gamertag: 'dekko#1376'
+  gamertag: dekko#1376
   offsetSeconds: -18000
   teams:
     - ortonators
 - platform: battle
-  gamertag: 'xhela#1898'
+  gamertag: xhela#1898
   offsetSeconds: -18000
   teams:
     - ortonators
 - platform: battle
-  gamertag: 'pekis#11414'
+  gamertag: pekis#11414
   offsetSeconds: -18000
   teams:
     - ortonators
+- platform: acti
+  gamertag: underground#7933030
+  offsetSeconds: -18000
+  teams:
+    - a-team
+- platform: battle
+  gamertag: garyuX#11163
+  offsetSeconds: -18000
+  teams:
+    - a-team
+- platform: battle
+  gamertag: janox#11807
+  offsetSeconds: -18000
+  teams:
+    - a-team
+- platform: battle
+  gamertag: edwin#12189
+  offsetSeconds: -18000
+  teams:
+    - a-team
