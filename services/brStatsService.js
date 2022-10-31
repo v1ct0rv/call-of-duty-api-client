@@ -1,10 +1,11 @@
-var moment = require('moment')
+import moment from "moment";
 
 const brStatsService = class BrStatsService {
   constructor(mongoClient, database, api) {
     this.mongoClient = mongoClient
     this.database = database
     this.API = api
+    this.Warzone = api?.Warzone
   }
 
   async init() {
@@ -24,9 +25,23 @@ const brStatsService = class BrStatsService {
     })
   }
 
+  MWBattleData = async function (gamertag, platform) {
+    return new Promise((resolve, reject) => {
+      let brDetails = {};
+      this.Warzone.fullData(gamertag, platform).then(data => {
+        let lifetime = data.data.lifetime;
+        if (void 0 !== lifetime) {
+          let filtered = Object.keys(lifetime.mode).filter((x => x.startsWith("br"))).reduce(((obj, key) => (obj[key] = lifetime.mode[key], obj)), {});
+          void 0 !== filtered.br && (filtered.br.properties.title = "br", brDetails.br = filtered.br.properties), void 0 !== filtered.br_dmz && (filtered.br_dmz.properties.title = "br_dmz", brDetails.br_dmz = filtered.br_dmz.properties), void 0 !== filtered.br_all && (filtered.br_all.properties.title = "br_all", brDetails.br_all = filtered.br_all.properties)
+        }
+        resolve(brDetails)
+      }).catch((e => reject(e)))
+    })
+  }
+
   async add(gamertag, platform, date, teams) {
     console.time(`brstats ${gamertag}`)
-    let brstatsData = await this.API.MWBattleData(gamertag, platform);
+    let brstatsData = await this.MWBattleData(gamertag, platform);
     brstatsData.date = date
     brstatsData.lastUpdate = new Date()
     brstatsData.username = gamertag
@@ -35,14 +50,14 @@ const brStatsService = class BrStatsService {
 
     // Custom stats
     const brData = brstatsData.br
-    brData.winsPercent = ((brData.wins*100)/brData.gamesPlayed)
-    brData.killsPerGame = brData.kills/brData.gamesPlayed
-    brData.gamesPerWin = (brData.wins > 0) ? brData.gamesPlayed/brData.wins : 0
-    brData.killsPerMin = brData.kills/(brData.timePlayed / 60)
+    brData.winsPercent = ((brData.wins * 100) / brData.gamesPlayed)
+    brData.killsPerGame = brData.kills / brData.gamesPlayed
+    brData.gamesPerWin = (brData.wins > 0) ? brData.gamesPlayed / brData.wins : 0
+    brData.killsPerMin = brData.kills / (brData.timePlayed / 60)
 
     // Complete existing data
-    let currentStats = await this.brstats.findOne({username : gamertag, platform, date: date})
-    if(currentStats?.br) {
+    let currentStats = await this.brstats.findOne({ username: gamertag, platform, date: date })
+    if (currentStats?.br) {
       brstatsData.br.lastWin = currentStats.br.lastWin
       brstatsData.br.longestStreak = currentStats.br.longestStreak
       brstatsData.br.longestStreakWin = currentStats.br.longestStreakWin
@@ -105,4 +120,4 @@ const brStatsService = class BrStatsService {
   }
 }
 
-module.exports = brStatsService
+export default brStatsService

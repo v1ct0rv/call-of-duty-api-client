@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const { composeWithMongoose } = require("graphql-compose-mongoose");
+import { composeWithMongoose } from "graphql-compose-mongoose";
 
-const RebirthStatsSchema = new Schema({
+const RebirthStatsSchemaDef = new Schema({
   date: {
     type: Date,
     default: Date.now,
@@ -85,9 +85,10 @@ const RebirthStatsSchema = new Schema({
   },
 });
 
-const rebirthStatsTC = composeWithMongoose(mongoose.model("rebirthstats", RebirthStatsSchema))
+export const RebirthStatsTC = composeWithMongoose(mongoose.model("rebirthstats", RebirthStatsSchemaDef))
+export const RebirthStatsSchema = mongoose.model("rebirthstats", RebirthStatsSchemaDef)
 
-module.exports = {
-  RebirthStatsSchema: mongoose.model("rebirthstats", RebirthStatsSchema),
-  RebirthStatsTC: rebirthStatsTC,
+export default {
+  RebirthStatsSchema,
+  RebirthStatsTC,
 };

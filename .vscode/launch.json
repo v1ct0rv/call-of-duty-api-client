@@ -9,6 +9,18 @@
       "name": "Run npm index",
       "request": "launch",
       "type": "node-terminal"
+    },
+    {
+      "command": "node syncOldMatches.js",
+      "name": "Run syncOldMatches",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "node server.js",
+      "name": "Run Server",
+      "request": "launch",
+      "type": "node-terminal"
     }
   ]
 }

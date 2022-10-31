@@ -1,5 +1,4 @@
-const { BRStatsTC } = require("../model/brstats");
-const { BRStatsSchema } = require("../model/brstats");
+import { BRStatsTC, BRStatsSchema } from "../model/brstats.js";
 
 BRStatsTC.addResolver({
   name: "create",
@@ -17,7 +16,7 @@ BRStatsTC.addResolver({
 });
 
 // https://graphql-compose.github.io/docs/plugins/plugin-mongoose.html
-const BRStatQuery = {
+export const BRStatQuery = {
   brStatById: BRStatsTC.getResolver("findById"),
   brStatByIds: BRStatsTC.getResolver("findByIds"),
   brStatOne: BRStatsTC.getResolver("findOne"),
@@ -27,7 +26,7 @@ const BRStatQuery = {
   brStatPagination: BRStatsTC.getResolver("pagination"),
 };
 
-const BRStatMutation = {
+export const BRStatMutation = {
   // brStatWithFile: BRStatsTC.getResolver("create"),
   // brStatCreateOne: BRStatsTC.getResolver("createOne"),
   // brStatCreateMany: BRStatsTC.getResolver("createMany"),
@@ -39,4 +38,4 @@ const BRStatMutation = {
   // brStatRemoveMany: BRStatsTC.getResolver("removeMany"),
 };
 
-module.exports = { BRStatQuery: BRStatQuery, BRStatMutation: BRStatMutation };
+export default { BRStatQuery, BRStatMutation };

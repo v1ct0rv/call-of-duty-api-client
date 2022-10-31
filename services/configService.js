@@ -65,4 +65,4 @@ const configService = class ConfigService {
   }
 }
 
-module.exports = configService
+export default configService

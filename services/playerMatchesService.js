@@ -1,11 +1,13 @@
-const moment = require('moment')
-const constants = require("../core/constants")
+import moment from "moment";
+import constants from "../core/constants.js";
+import { apiErrorHandling } from "../core/errorHandling.js"
 
 const playerMatchesService = class PlayerMatchesService {
   constructor(mongoClient, database, api, trackedGamersService) {
     this.mongoClient = mongoClient
     this.database = database
     this.API = api
+    this.Warzone = api?.Warzone
     this.trackedGamersService = trackedGamersService
   }
 
@@ -28,10 +30,10 @@ const playerMatchesService = class PlayerMatchesService {
   async add(gamertag, platform) {
     console.time(`playermatches ${gamertag}`)
     // Sync last 20 matches
-    const playerMatchesData = await this.API.MWcombatwz(gamertag, platform)
+    const playerMatchesData = apiErrorHandling(await this.Warzone.combatHistory(gamertag, platform))
     const gamer = await this.trackedGamersService.get(gamertag, platform)
 
-    for (const match of playerMatchesData.matches) {
+    for (const match of playerMatchesData.data.matches) {
       // Update UnoId in gamer table if not exists
       if (!gamer.uno) {
         gamer.uno = match.player.uno
@@ -330,8 +332,9 @@ const playerMatchesService = class PlayerMatchesService {
       console.log(`[${new Date().toISOString()}] Getting old matches for gamertag '${gamertag}' and platform '${platform}' from '${start.format('YYYY-MM-DD HH:mm:ss')}' to '${end.format('YYYY-MM-DD HH:mm:ss')}'`)
       let oldMatchesData
       try {
-        oldMatchesData = await this.API.MWcombatwzdate(gamertag, start.valueOf(), end.valueOf(), platform)
+        oldMatchesData = (await this.Warzone.combatHistoryWithDate(gamertag, start.valueOf(), end.valueOf(), platform)).data
       } catch (error) {
+        console.log(`'${error}'`)
         console.log(`'${error.toLowerCase()}'`)
         // If the errror is not allowed, continue with next gamertag
         if (error.toLowerCase() === "not permitted: not allowed") {
@@ -397,4 +400,4 @@ const playerMatchesService = class PlayerMatchesService {
   }
 }
 
-module.exports = playerMatchesService
+export default playerMatchesService

@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const { composeWithMongoose } = require("graphql-compose-mongoose");
+import { composeWithMongoose } from "graphql-compose-mongoose";
 
-const BRStatsSchema = new Schema({
+const BRStatsSchemaDef = new Schema({
   date: {
     type: Date,
     default: Date.now,
@@ -91,14 +91,12 @@ const BRStatsSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-});
+})
 
 // BRStatsSchema.virtual('br.winsPercent').get(function() {
 //   //return ((this.wins*100)/this.gamesPlayed);
 //   return this.br.wins
 // });
-
-const brStatsTC = composeWithMongoose(mongoose.model("brstats", BRStatsSchema))
 
 // Custom calculated stats
 // brStatsTC.get('br').addFields({
@@ -125,7 +123,11 @@ const brStatsTC = composeWithMongoose(mongoose.model("brstats", BRStatsSchema))
 //   }
 // });
 
-module.exports = {
-  BRStatsSchema: mongoose.model("brstats", BRStatsSchema),
-  BRStatsTC: brStatsTC,
+export const BRStatsSchema = mongoose.model("brstats", BRStatsSchemaDef)
+
+export const BRStatsTC = composeWithMongoose(mongoose.model("brstats", BRStatsSchemaDef))
+
+export default {
+  BRStatsSchema,
+  BRStatsTC,
 };

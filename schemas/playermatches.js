@@ -1,4 +1,4 @@
-const { PlayerMatchesSchema, PlayerMatchesTC } = require("../model/playermatches");
+import { PlayerMatchesSchema, PlayerMatchesTC } from "../model/playermatches.js";
 
 PlayerMatchesTC.addResolver({
   name: "create",
@@ -16,7 +16,7 @@ PlayerMatchesTC.addResolver({
 });
 
 // https://graphql-compose.github.io/docs/plugins/plugin-mongoose.html
-const PlayerMatchQuery = {
+export const PlayerMatchQuery = {
   playerMatchById: PlayerMatchesTC.getResolver("findById"),
   playerMatchByIds: PlayerMatchesTC.getResolver("findByIds"),
   playerMatchOne: PlayerMatchesTC.getResolver("findOne"),
@@ -26,7 +26,7 @@ const PlayerMatchQuery = {
   playerMatchPagination: PlayerMatchesTC.getResolver("pagination"),
 };
 
-const PlayerMatchMutation = {
+export const PlayerMatchMutation = {
   // matchWithFile: PlayerMatchesTC.getResolver("create"),
   // matchCreateOne: PlayerMatchesTC.getResolver("createOne"),
   // matchCreateMany: PlayerMatchesTC.getResolver("createMany"),
@@ -38,4 +38,4 @@ const PlayerMatchMutation = {
   // matchRemoveMany: PlayerMatchesTC.getResolver("removeMany"),
 };
 
-module.exports = { PlayerMatchQuery: PlayerMatchQuery, PlayerMatchMutation: PlayerMatchMutation };
+export default { PlayerMatchQuery, PlayerMatchMutation };

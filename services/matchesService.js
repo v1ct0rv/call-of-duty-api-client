@@ -1,10 +1,11 @@
-var moment = require('moment')
+import moment from "moment";
 
 const matchesService = class MatchesService {
   constructor(mongoClient, database, api, playerMatchesService, configService) {
     this.mongoClient = mongoClient
     this.database = database
     this.API = api
+    this.Warzone = api?.Warzone
     this.playerMatchesService = playerMatchesService
     this.configService = configService
   }
@@ -50,7 +51,7 @@ const matchesService = class MatchesService {
         let dateString = new Date().toISOString()
         try {
           console.time(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
-          const matchInfo = await this.API.MWFullMatchInfowz(match.matchID, match.platform)
+          const matchInfo = (await this.Warzone.matchInfo(match.matchID, match.platform)).data
           console.timeEnd(`[${dateString}] syncMatches: queryMatch ${match.matchID}`)
           matchInfo.matchID = match.matchID
           if(matchInfo.allPlayers.length > 0) {
@@ -136,4 +137,4 @@ const matchesService = class MatchesService {
   }
 }
 
-module.exports = matchesService
+export default matchesService

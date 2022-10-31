@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const { composeWithMongoose } = require("graphql-compose-mongoose");
+import { composeWithMongoose } from "graphql-compose-mongoose";
 
-const PlayerMatchesSchema = new Schema({
+const PlayerMatchesSchemaDef = new Schema({
   matchID: { type: String , index: true },
   platform: String,
   username: { type: String, index: true },
@@ -63,9 +63,10 @@ const PlayerMatchesSchema = new Schema({
   },
 });
 
-const playerMatchesTC = composeWithMongoose(mongoose.model("playermatches", PlayerMatchesSchema))
+export const PlayerMatchesTC = composeWithMongoose(mongoose.model("playermatches", PlayerMatchesSchemaDef))
+export const PlayerMatchesSchema = mongoose.model("playermatches", PlayerMatchesSchemaDef)
 
-module.exports = {
-  PlayerMatchesSchema: mongoose.model("playermatches", PlayerMatchesSchema),
-  PlayerMatchesTC: playerMatchesTC,
+export default {
+  PlayerMatchesSchema,
+  PlayerMatchesTC,
 };

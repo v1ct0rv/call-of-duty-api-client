@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const { composeWithMongoose } = require("graphql-compose-mongoose");
+import { composeWithMongoose } from "graphql-compose-mongoose";
 
 const AllPlayersSchema = new Schema({
   playerStats: {
@@ -21,7 +21,7 @@ const AllPlayersSchema = new Schema({
   },
 })
 
-const MatchesSchema = new Schema({
+const MatchesSchemaDef = new Schema({
   matchID: { type: String , index: true },
   utcStartSeconds: Number,
   utcEndSeconds: Number,
@@ -39,9 +39,11 @@ const MatchesSchema = new Schema({
   allPlayers: [ AllPlayersSchema ]
 });
 
-const matchesTC = composeWithMongoose(mongoose.model("matches", MatchesSchema))
+export const MatchesSchema = mongoose.model("matches", MatchesSchemaDef)
 
-module.exports = {
-  MatchesSchema: mongoose.model("matches", MatchesSchema),
-  MatchesTC: matchesTC,
+export const MatchesTC = composeWithMongoose(mongoose.model("matches", MatchesSchemaDef))
+
+export default {
+  MatchesSchema,
+  MatchesTC,
 };

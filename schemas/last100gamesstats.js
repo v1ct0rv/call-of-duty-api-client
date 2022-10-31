@@ -1,5 +1,5 @@
-const { Last100GamesStatsTC } = require("../model/last100gamesstats");
-const { Last100GamesStatsSchema } = require("../model/last100gamesstats");
+import { Last100GamesStatsTC } from "../model/last100gamesstats.js";
+import { Last100GamesStatsSchema } from "../model/last100gamesstats.js";
 
 Last100GamesStatsTC.addResolver({
   name: "create",
@@ -17,7 +17,7 @@ Last100GamesStatsTC.addResolver({
 });
 
 // https://graphql-compose.github.io/docs/plugins/plugin-mongoose.html
-const Last100GamesStatQuery = {
+export const Last100GamesStatQuery = {
   last100GamesStatById: Last100GamesStatsTC.getResolver("findById"),
   last100GamesStatByIds: Last100GamesStatsTC.getResolver("findByIds"),
   last100GamesStatOne: Last100GamesStatsTC.getResolver("findOne"),
@@ -27,7 +27,7 @@ const Last100GamesStatQuery = {
   last100GamesStatPagination: Last100GamesStatsTC.getResolver("pagination"),
 };
 
-const Last100GamesStatMutation = {
+export const Last100GamesStatMutation = {
   // last100GamesStatWithFile: Last100GamesStatsTC.getResolver("create"),
   // last100GamesStatCreateOne: Last100GamesStatsTC.getResolver("createOne"),
   // last100GamesStatCreateMany: Last100GamesStatsTC.getResolver("createMany"),
@@ -39,4 +39,4 @@ const Last100GamesStatMutation = {
   // last100GamesStatRemoveMany: Last100GamesStatsTC.getResolver("removeMany"),
 };
 
-module.exports = { Last100GamesStatQuery: Last100GamesStatQuery, Last100GamesStatMutation: Last100GamesStatMutation };
+export default { Last100GamesStatQuery, Last100GamesStatMutation };

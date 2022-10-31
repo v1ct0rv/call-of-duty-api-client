@@ -1,14 +1,19 @@
-require('dotenv').config()
-const express = require("express")
-const path = require('path')
+import { config } from "dotenv";
+config();
+import express from "express";
 const app = express()
 const port = 5000
-const mongoose = require("mongoose")
-const { graphqlHTTP } = require("express-graphql")
-const logger = require("./core/logger")
-var cors = require('cors')
+import mongoose from "mongoose";
+import { graphqlHTTP } from "express-graphql";
+import logger from "./core/logger.js";
+import cors from "cors";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 // const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
 // const statsJob = require('./jobs/statsJob')
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const extensions = ({ context }) => {
   return {
@@ -35,14 +40,14 @@ app.listen(port, async () => {
   })
 })
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(join(__dirname, 'public')))
 
 mongoose.connection.on(
   "error",
   console.error.bind(console, "MongoDB connection error:")
 )
 
-const graphqlSchema = require("./schemas/index")
+import graphqlSchema from "./schemas/index.js";
 
 app.use(
   "/graphql",

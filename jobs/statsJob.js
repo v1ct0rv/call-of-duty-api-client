@@ -1,16 +1,12 @@
-const API = require('call-of-duty-api')({
-  platform: "battle"
-})
-const util = require('util')
-const {
-  MongoClient
-} = require("mongodb");
-const TrackedGamersService = require("../services/trackedGamersService");
-const BrStatsService = require("../services/brStatsService");
-const LifetimeStatsService = require("../services/lifetimeStatsService");
-const PlayerMatchesService = require("../services/playerMatchesService");
-const MatchesService = require("../services/matchesService");
-const ConfigService = require('../services/configService');
+import API from "call-of-duty-api";
+import util from "util";
+import { MongoClient } from "mongodb";
+import TrackedGamersService from "../services/trackedGamersService.js";
+import BrStatsService from "../services/brStatsService.js";
+import LifetimeStatsService from "../services/lifetimeStatsService.js";
+import PlayerMatchesService from "../services/playerMatchesService.js";
+import MatchesService from "../services/matchesService.js";
+import ConfigService from "../services/configService.js";
 
 const statsJob = async function () {
   console.log(`[${new Date().toISOString()}]: Starting Stats Job.`)
@@ -46,16 +42,13 @@ const statsJob = async function () {
     const matchesService = new MatchesService(client, database, API, playerMatchesService, configService)
     await matchesService.init()
 
-    console.time('login')
-    const authMode = await configService.get('authentication.mode')
-    if (authMode.value == 'username') {
-      await API.login((await configService.get('authentication.username')).value, (await configService.get('authentication.password')).value, (
-        await configService.get('authentication.2captchaApiKey')).value);
-    } else if (authMode.value == 'sso') {
-      await API.loginWithSSO((await configService.get('authentication.ssoToken')).value);
-    } else {
-      throw new Error(`Unknown Authentication Mode ${authMode}`)
+    if(process.env.DEBUG) {
+      console.log(`Starting in debug mode...`)
+      API.enableDebugMode()
     }
+
+    console.time('login')
+    API.login((await configService.get('authentication.ssoToken')).value);
     console.timeEnd('login')
 
     const SINGLE_GAMER = process.env.SINGLE_GAMER || false;
@@ -147,4 +140,4 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-module.exports = statsJob
+export default statsJob

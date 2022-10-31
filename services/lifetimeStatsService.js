@@ -24,7 +24,7 @@ const lifetimeStatsService = class LifetimeStatsService {
 
   async add(gamertag, platform, date) {
     console.time(`lifetimeStats gamer: ${gamertag}, plattform: ${platform}`)
-    let lifetimeStatsData = await this.API.MWwz(gamertag, platform)
+    let lifetimeStatsData = await this.Warzone.fullData(gamertag, platform)
     lifetimeStatsData.date = date
     lifetimeStatsData.platform = platform
     await this.lifetimeStats.updateOne({
@@ -44,4 +44,4 @@ const lifetimeStatsService = class LifetimeStatsService {
   }
 }
 
-module.exports = lifetimeStatsService
+export default lifetimeStatsService

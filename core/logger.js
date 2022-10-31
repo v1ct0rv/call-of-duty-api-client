@@ -1,6 +1,6 @@
-const winston = require("winston");
-const expressWinston = require("express-winston");
-require("winston-mongodb");
+import winston from "winston";
+import expressWinston from "express-winston";
+import "winston-mongodb";
 
 const logger = function (req, res, next) {
   expressWinston.logger({
@@ -19,4 +19,4 @@ const logger = function (req, res, next) {
   });
   next();
 };
-module.exports = logger;
+export default logger;

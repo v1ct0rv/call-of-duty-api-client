@@ -1,5 +1,4 @@
-const { RebirthStatsTC } = require("../model/rebirthstats");
-const { RebirthStatsSchema } = require("../model/rebirthstats");
+import { RebirthStatsTC, RebirthStatsSchema } from "../model/rebirthstats.js";
 
 RebirthStatsTC.addResolver({
   name: "create",
@@ -17,7 +16,7 @@ RebirthStatsTC.addResolver({
 });
 
 // https://graphql-compose.github.io/docs/plugins/plugin-mongoose.html
-const RebirthStatQuery = {
+export const RebirthStatQuery = {
   rebirthStatById: RebirthStatsTC.getResolver("findById"),
   rebirthStatByIds: RebirthStatsTC.getResolver("findByIds"),
   rebirthStatOne: RebirthStatsTC.getResolver("findOne"),
@@ -27,7 +26,7 @@ const RebirthStatQuery = {
   rebirthStatPagination: RebirthStatsTC.getResolver("pagination"),
 };
 
-const RebirthStatMutation = {
+export const RebirthStatMutation = {
   // rebirthStatWithFile: RebirthStatsTC.getResolver("create"),
   // rebirthStatCreateOne: RebirthStatsTC.getResolver("createOne"),
   // rebirthStatCreateMany: RebirthStatsTC.getResolver("createMany"),
@@ -39,4 +38,4 @@ const RebirthStatMutation = {
   // rebirthStatRemoveMany: RebirthStatsTC.getResolver("removeMany"),
 };
 
-module.exports = { RebirthStatQuery: RebirthStatQuery, RebirthStatMutation: RebirthStatMutation };
+export default { RebirthStatQuery, RebirthStatMutation };

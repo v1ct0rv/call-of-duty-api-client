@@ -1,16 +1,13 @@
-require('dotenv').config()
-const API = require('call-of-duty-api')({
-  platform: "battle"
-})
-const util = require('util')
-const {
-  MongoClient
-} = require("mongodb");
-const retry = require('async-retry');
-const TrackedGamersService = require("./services/trackedGamersService");
-const PlayerMatchesService = require("./services/playerMatchesService");
-const MatchesService = require("./services/matchesService");
-const ConfigService = require('./services/configService');
+import { config } from "dotenv";
+config();
+import API from "call-of-duty-api";
+import util from "util";
+import { MongoClient } from "mongodb";
+import retry from "async-retry";
+import TrackedGamersService from "./services/trackedGamersService.js";
+import PlayerMatchesService from "./services/playerMatchesService.js";
+import MatchesService from "./services/matchesService.js";
+import ConfigService from "./services/configService.js";
 
 const syncMatchesJob = async function () {
 
@@ -35,16 +32,13 @@ const syncMatchesJob = async function () {
     const playerMatchesService = new PlayerMatchesService(client, database, API, trackedGamersService)
     await playerMatchesService.init()
 
-    console.time('login')
-    const authMode = await configService.get('authentication.mode')
-    if (authMode.value == 'username') {
-      await API.login((await configService.get('authentication.username')).value, (await configService.get('authentication.password')).value, (
-        await configService.get('authentication.2captchaApiKey')).value);
-    } else if (authMode.value == 'sso') {
-      await API.loginWithSSO((await configService.get('authentication.ssoToken')).value_alt); // This will be different than index.js uses to avoid too many requests
-    } else {
-      throw new Error(`Unknown Authentication Mode ${authMode}`)
+    if(process.env.DEBUG) {
+      console.log(`Starting in debug mode...`)
+      API.enableDebugMode()
     }
+
+    console.time('login')
+    API.login((await configService.get('authentication.ssoToken')).value_alt); // This will be different than index.js uses to avoid too many requests
     console.timeEnd('login')
 
     const SINGLE_GAMER = process.env.SINGLE_GAMER || false;

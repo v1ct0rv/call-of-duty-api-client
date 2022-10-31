@@ -1,13 +1,13 @@
-const { SchemaComposer } = require( 'graphql-compose');
+import { SchemaComposer } from "graphql-compose";
 
 
 const schemaComposer = new SchemaComposer();
 
-const { BRStatQuery, BRStatMutation } = require ('./brstats');
-const { RebirthStatQuery, RebirthStatMutation } = require ('./rebirthstats');
-const { MatchQuery, MatchMutation } = require ('./matches');
-const { PlayerMatchQuery, PlayerMatchMutation } = require ('./playermatches');
-const { Last100GamesStatQuery, Last100GamesStatMutation } = require ('./last100gamesstats');
+import { BRStatQuery, BRStatMutation } from "./brstats.js";
+import { RebirthStatQuery, RebirthStatMutation } from "./rebirthstats.js";
+import { MatchQuery, MatchMutation } from "./matches.js";
+import { PlayerMatchQuery, PlayerMatchMutation } from "./playermatches.js";
+import { Last100GamesStatQuery, Last100GamesStatMutation } from "./last100gamesstats.js";
 
 schemaComposer.Query.addFields({
     ...BRStatQuery,
@@ -25,4 +25,4 @@ schemaComposer.Mutation.addFields({
     ...Last100GamesStatMutation,
 });
 
-module.exports = schemaComposer.buildSchema();
+export default schemaComposer.buildSchema();

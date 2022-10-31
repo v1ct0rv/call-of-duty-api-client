@@ -1,6 +1,7 @@
-const yaml = require('js-yaml')
-const fs   = require('fs')
-const path = require('path')
+import yaml from "js-yaml";
+import fs from "fs";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 const trackedGamersService = class TrackedGamersService {
   constructor(mongoClient, database) {
@@ -130,7 +131,9 @@ const trackedGamersService = class TrackedGamersService {
   // uno     /* numerical representation of Activision ID */
   // all       /* All platforms, used for fuzzySearch */
   async bootstrapData() {
-    const gamers = yaml.load(fs.readFileSync(path.join(__dirname, '../data/gamers.yml'), 'utf8'))
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const gamers = yaml.load(fs.readFileSync(join(__dirname, '../data/gamers.yml'), 'utf8'))
     for (const gamer of gamers) {
       gamer.gamertag = gamer.gamertag.toLowerCase()
       await this.trackedGamers.updateOne({ gamertag: gamer.gamertag, platform: gamer.platform }, {
@@ -142,4 +145,4 @@ const trackedGamersService = class TrackedGamersService {
   }
 }
 
-module.exports = trackedGamersService
+export default trackedGamersService

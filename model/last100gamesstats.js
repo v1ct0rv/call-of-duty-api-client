@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const { composeWithMongoose } = require("graphql-compose-mongoose");
+import { composeWithMongoose } from "graphql-compose-mongoose";
 
-const Last100GamesStatsSchema = new Schema({
+const Last100GamesStatsSchemaDef = new Schema({
   platform: String,
   username: { type: String, index: true },
   teams: { type: [String], index: true },
@@ -19,9 +19,10 @@ const Last100GamesStatsSchema = new Schema({
   },
 });
 
-const last100GamesStatsTC = composeWithMongoose(mongoose.model("last100gamesstats", Last100GamesStatsSchema))
+export const Last100GamesStatsTC = composeWithMongoose(mongoose.model("last100gamesstats", Last100GamesStatsSchemaDef))
+export const Last100GamesStatsSchema = mongoose.model("last100gamesstats", Last100GamesStatsSchemaDef)
 
-module.exports = {
-  Last100GamesStatsSchema: mongoose.model("last100gamesstats", Last100GamesStatsSchema),
-  Last100GamesStatsTC: last100GamesStatsTC,
+export default {
+  Last100GamesStatsSchema,
+  Last100GamesStatsTC,
 };

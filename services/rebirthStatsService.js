@@ -1,4 +1,4 @@
-var moment = require('moment')
+import moment from "moment";
 
 const rebirthStatsService = class RebirthStatsService {
   constructor(mongoClient, database) {
@@ -42,4 +42,4 @@ const rebirthStatsService = class RebirthStatsService {
   }
 }
 
-module.exports = rebirthStatsService
+export default rebirthStatsService

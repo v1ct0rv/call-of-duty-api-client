@@ -1,13 +1,11 @@
-const {
-  MongoClient
-} = require("mongodb")
-const moment = require('moment')
+import { MongoClient } from "mongodb";
+import moment from "moment";
 
-const TrackedGamersService = require("../services/trackedGamersService");
-const PlayerMatchesService = require("../services/playerMatchesService")
-const RebirthStatsService = require("../services/rebirthStatsService")
-const BrStatsService = require("../services/brStatsService");
-const Last100GamesStatsService = require("../services/last100GamesStatsService");
+import TrackedGamersService from "../services/trackedGamersService.js";
+import PlayerMatchesService from "../services/playerMatchesService.js";
+import RebirthStatsService from "../services/rebirthStatsService.js";
+import BrStatsService from "../services/brStatsService.js";
+import Last100GamesStatsService from "../services/last100GamesStatsService.js";
 
 const aggregateJob = async function () {
   // Create a new MongoClient
@@ -249,6 +247,4 @@ function getDateWithoutTime(dateTime) {
   return date
 }
 
-
-
-module.exports = aggregateJob
+export default aggregateJob

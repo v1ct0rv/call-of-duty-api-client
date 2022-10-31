@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   BR_MODES: [ "br_brquads","br_brtrios","br_brduos","br_brsolos", "br_brsolo", "br_vg_royale_quads", "br_vg_royale_trios", "br_vg_royale_duos", "br_vg_royale_solo", "br_vg_royale_solo", "br_br_real", "br_dbd_dbd", "br_vov_op_flash", "br_brz_brquads", "br_brz_brtrios", "br_brz_brduos", "br_brbbquad", "br_brbbtrio", "br_brbbduo", "br_brbbsolo", "br_br_quads", "br_brthquad", "br_brhwnquad", "br_brhwntrios", "br_brduohwn", "br_brsolohwn", "br_buy_back_quads", "br_buy_back_trios", "br_buy_back_duos", "br_buy_back_solo", "br_mendota_playlist_wz330/op_mon" ],
   REBIRTH_MODES: ["br_rebirth_rbrthsolos", "br_rebirth_rbrthduos", "br_rebirth_rbrthtrios", "br_rebirth_rbrthquad", "br_rebirth_rbrthex", "br_rebirth_reverse_playlist_wz340/fortkeep_res_solo", "br_rebirth_playlist_wz340/fortkeep_res_duos", "br_rebirth_reverse_playlist_wz325/rbrthsolos", "br_rebirth_playlist_wz340/fortkeep_res_trios", "br_rebirth_playlist_wz340/fortkeep_res_quad"],
 }

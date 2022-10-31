@@ -1,7 +1,8 @@
-require('dotenv').config()
-const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler')
-const statsJob = require('./jobs/statsJob')
-const aggregateJob = require('./jobs/aggregateJob')
+import { config } from "dotenv";
+config();
+import { ToadScheduler, SimpleIntervalJob, AsyncTask } from "toad-scheduler";
+import statsJob from "./jobs/statsJob.js";
+import aggregateJob from "./jobs/aggregateJob.js";
 const scheduler = new ToadScheduler()
 const DISABLE_INTERVAL_JOBS = process.env.DISABLE_INTERVAL_JOBS || false;
 
